@@ -78,42 +78,28 @@ static DataLayer *sharedInstance = nil;
     return obj;
 //    [self saveChangesToCoreData];
 }
-/*
+
 -(User*)getUserDetailsFromUserName:(NSString*)username
 {
     User *obj;
     NSEntityDescription *entity     = [NSEntityDescription
-                                       entityForName:@"OPUserDetails" inManagedObjectContext:context];
+                                       entityForName:@"User" inManagedObjectContext:context];
     NSFetchRequest *fetchRequest    = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:entity];
+    [fetchRequest setEntity:entity];   
+    NSPredicate *predicate  = [NSPredicate predicateWithFormat:@"userEmail == %@",username];
+    
+    [fetchRequest setPredicate:predicate];
     NSError *error;
-    {
-        NSPredicate *predicate  = [NSPredicate predicateWithFormat:@"op_user_name == %@ AND op_category== %d AND op_type == %@",username,cat,type];
-        
-        [fetchRequest setPredicate:predicate];
-    }
-    
-    
-    NSArray *contactListArray   = [context executeFetchRequest:fetchRequest error:&error];
+
+    NSArray *contactListArray=[context executeFetchRequest:fetchRequest error:&error];
     if (contactListArray.count>0)
     {
-        obj                 = [contactListArray objectAtIndex:0];
+        obj= [contactListArray objectAtIndex:0];
     }
-    else
-    {
-        obj                 = [NSEntityDescription insertNewObjectForEntityForName:@"OPUserDetails" inManagedObjectContext:context];
-        
-        obj.op_user_name    = username;
-        obj.op_category     = cat;
-        obj.op_type         = type;
-        if ([type length] >0) {
-            obj.op_SectionName  = [[type substringToIndex:1] uppercaseString];
-        }
-        
-    }
+    
     return obj;
 }
-*/
+
 -(NSArray *) getAllFailedSubmissions
 {
     NSEntityDescription *entity = [NSEntityDescription

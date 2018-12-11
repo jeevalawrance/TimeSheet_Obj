@@ -123,7 +123,7 @@
     
     //    _txtUsername.text=@"mobileuser";
     //    _txtpassword.text=@"cpd123.com";
-    //    [self registerWS];
+    //    [self loginWS];
     
 }
 
@@ -219,13 +219,24 @@
 
 
 #pragma mark - SignIn Action
-- (IBAction)registerAction:(id)sender {
+- (IBAction)signInAction:(id)sender {
     [self isValidatedCompletion:^(BOOL success, UITextField *textField, NSString *errormessage) {
         if (success) {
             [self dissmissongKeyboard];
             [self highlightErrorField:nil];
 
-            [self registerWS];
+            User *objUser = [[DataLayer getInstance] getUserDetailsFromUserName:self.txtUsername.text];
+            
+            NSLog(@"--%@",objUser.userName);
+            
+            if (objUser) {
+                
+                [[NSUserDefaults standardUserDefaults] setBool:TRUE forKey:IsRegisterd];
+                
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+         
+//            [self loginWS];
             
         }
         else
@@ -259,7 +270,7 @@
         }
     }
 }
--(void)registerWS
+-(void)loginWS
 {
     
     

@@ -745,14 +745,8 @@
 				92DB637A1FA9DCD400F7FF14 /* LoginBaseViewController.m */,
 				92DB63841FA9DCD400F7FF14 /* LanguageSelectionViewController.h */,
 				92DB63851FA9DCD400F7FF14 /* LanguageSelectionViewController.m */,
-				92DB637D1FA9DCD400F7FF14 /* SignInViewController.h */,
-				92DB637E1FA9DCD400F7FF14 /* SignInViewController.m */,
 				92DB63801FA9DCD400F7FF14 /* SignUpViewController.h */,
 				92DB637B1FA9DCD400F7FF14 /* SignUpViewController.m */,
-				92DB63831FA9DCD400F7FF14 /* ForgotPasswordViewController.h */,
-				92DB63821FA9DCD400F7FF14 /* ForgotPasswordViewController.m */,
-				92DB63811FA9DCD400F7FF14 /* RegisterationSuccessViewController.h */,
-				92DB637C1FA9DCD400F7FF14 /* RegisterationSuccessViewController.m */,
 			);
 			path = LandingPages;
 			sourceTree = "<group>";
@@ -881,10 +875,16 @@
 		EF37E0AA21B7C529004C14F8 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				92DB637D1FA9DCD400F7FF14 /* SignInViewController.h */,
+				92DB637E1FA9DCD400F7FF14 /* SignInViewController.m */,
 				EF37E0AB21B7C545004C14F8 /* ProfileViewController.h */,
 				EF37E0AC21B7C545004C14F8 /* ProfileViewController.m */,
 				EF37E0C121B7E179004C14F8 /* RegisterViewController.h */,
 				EF37E0C221B7E179004C14F8 /* RegisterViewController.m */,
+				92DB63831FA9DCD400F7FF14 /* ForgotPasswordViewController.h */,
+				92DB63821FA9DCD400F7FF14 /* ForgotPasswordViewController.m */,
+				92DB63811FA9DCD400F7FF14 /* RegisterationSuccessViewController.h */,
+				92DB637C1FA9DCD400F7FF14 /* RegisterationSuccessViewController.m */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
