@@ -14,6 +14,7 @@ static NSString *kStoryboardIdMain      =   @"Main";
 static NSString *kStoryboardIdLanding     =   @"Landing";
 static NSString *kStoryboardIdTutorial     =   @"Tutorial";
 static NSString *kStoryboardIdLogin     =   @"Profile";
+static NSString *kStoryboardIdDashboard     =   @"Dashboard";
 
  
 #endif /* StoryboarIds_h */

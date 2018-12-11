@@ -33,6 +33,18 @@
     [[NSUserDefaults standardUserDefaults] setObject:@"en" forKey:SelecteLangauge];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:IsRegisterd]) {
+        
+        UIStoryboard *mainSB = [UIStoryboard storyboardWithName:kStoryboardIdDashboard bundle:nil];
+        
+//        UIViewController *myVC =[mainSB instantiateViewControllerWithIdentifier:@"dashBoardVC"];
+        
+        UINavigationController *vcLogin= [mainSB instantiateInitialViewController];
+        [self.window setRootViewController:vcLogin];
+
+//
+    }
+    /*
     if (![[NSUserDefaults standardUserDefaults] boolForKey:kLoadingTutorial]) {
         
 //        UIStoryboard *mainSB = [UIStoryboard storyboardWithName:kStoryboardIdTutorial bundle:nil];
@@ -62,6 +74,7 @@
         ContainerViewController *container = [[ContainerViewController alloc] initWithLeftVC:leftVC rightVC:rightVC topVC:nil bottomVC:nil middleVC:middle];
         self.window.rootViewController = container;
     }
+    */
     
     return YES;
 }

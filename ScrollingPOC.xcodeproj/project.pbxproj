@@ -15,6 +15,11 @@
 		1306921E21BEF42C00C97298 /* User+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 1306921621BEF42C00C97298 /* User+CoreDataProperties.m */; };
 		1306921F21BEF42C00C97298 /* TaskList+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 1306921921BEF42C00C97298 /* TaskList+CoreDataClass.m */; };
 		1306922021BEF42C00C97298 /* TaskList+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 1306921A21BEF42C00C97298 /* TaskList+CoreDataProperties.m */; };
+		1377C02A21BFFD35002D6AFC /* Dashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1377C02921BFFD35002D6AFC /* Dashboard.storyboard */; };
+		1377C02D21BFFD77002D6AFC /* launchImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1377C02B21BFFD77002D6AFC /* launchImage@2x.png */; };
+		1377C02E21BFFD77002D6AFC /* launchImage@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1377C02C21BFFD77002D6AFC /* launchImage@3x.png */; };
+		1377C03321BFFECB002D6AFC /* TS_DashboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1377C03221BFFECB002D6AFC /* TS_DashboardViewController.m */; };
+		1377C03621C00270002D6AFC /* TS_DashboardCellCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1377C03521C00270002D6AFC /* TS_DashboardCellCollectionViewCell.m */; };
 		92099F5B1FC18320002F22CF /* SaveMediasToCustomAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 92099F5A1FC18320002F22CF /* SaveMediasToCustomAlbum.m */; };
 		925098052104640400E3D5EA /* DPCustomAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 925098032104640300E3D5EA /* DPCustomAlertView.m */; };
 		925098062104640400E3D5EA /* DPCustomAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 925098042104640400E3D5EA /* DPCustomAlertView.xib */; };
@@ -160,6 +165,13 @@
 		1306921821BEF42C00C97298 /* TaskList+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "TaskList+CoreDataClass.h"; path = "CoredataModel/TaskList+CoreDataClass.h"; sourceTree = "<group>"; };
 		1306921921BEF42C00C97298 /* TaskList+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "TaskList+CoreDataClass.m"; path = "CoredataModel/TaskList+CoreDataClass.m"; sourceTree = "<group>"; };
 		1306921A21BEF42C00C97298 /* TaskList+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "TaskList+CoreDataProperties.m"; path = "CoredataModel/TaskList+CoreDataProperties.m"; sourceTree = "<group>"; };
+		1377C02921BFFD35002D6AFC /* Dashboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Dashboard.storyboard; sourceTree = "<group>"; };
+		1377C02B21BFFD77002D6AFC /* launchImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "launchImage@2x.png"; sourceTree = "<group>"; };
+		1377C02C21BFFD77002D6AFC /* launchImage@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "launchImage@3x.png"; sourceTree = "<group>"; };
+		1377C03121BFFECB002D6AFC /* TS_DashboardViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TS_DashboardViewController.h; sourceTree = "<group>"; };
+		1377C03221BFFECB002D6AFC /* TS_DashboardViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TS_DashboardViewController.m; sourceTree = "<group>"; };
+		1377C03421C00270002D6AFC /* TS_DashboardCellCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TS_DashboardCellCollectionViewCell.h; sourceTree = "<group>"; };
+		1377C03521C00270002D6AFC /* TS_DashboardCellCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TS_DashboardCellCollectionViewCell.m; sourceTree = "<group>"; };
 		2DDADD9719184014138A6C3F /* Pods-ScrollingPOC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ScrollingPOC.debug.xcconfig"; path = "Target Support Files/Pods-ScrollingPOC/Pods-ScrollingPOC.debug.xcconfig"; sourceTree = "<group>"; };
 		92099F591FC1831F002F22CF /* SaveMediasToCustomAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaveMediasToCustomAlbum.h; sourceTree = "<group>"; };
 		92099F5A1FC18320002F22CF /* SaveMediasToCustomAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaveMediasToCustomAlbum.m; sourceTree = "<group>"; };
@@ -417,6 +429,17 @@
 			path = KPDropMenu;
 			sourceTree = "<group>";
 		};
+		1377C02421BFFCAD002D6AFC /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				1377C03121BFFECB002D6AFC /* TS_DashboardViewController.h */,
+				1377C03221BFFECB002D6AFC /* TS_DashboardViewController.m */,
+				1377C03421C00270002D6AFC /* TS_DashboardCellCollectionViewCell.h */,
+				1377C03521C00270002D6AFC /* TS_DashboardCellCollectionViewCell.m */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
 		80CC140C9EB7EF2275B21607 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -450,6 +473,7 @@
 				92DB62B01FA9C05500F7FF14 /* LaunchScreen.storyboard */,
 				EF37E0A021B7A00F004C14F8 /* Tutorial.storyboard */,
 				EF37E0BF21B7DD6D004C14F8 /* Profile.storyboard */,
+				1377C02921BFFD35002D6AFC /* Dashboard.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -687,6 +711,8 @@
 		92DB63471FA9D03200F7FF14 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				1377C02B21BFFD77002D6AFC /* launchImage@2x.png */,
+				1377C02C21BFFD77002D6AFC /* launchImage@3x.png */,
 				EF37E0AE21B7C840004C14F8 /* profile-bg.png */,
 				EF37E0B021B7C85B004C14F8 /* profile-rabbit-toy.png */,
 				92DB635D1FA9D05B00F7FF14 /* commonimages */,
@@ -754,6 +780,7 @@
 		92DB639C1FA9E11E00F7FF14 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				1377C02421BFFCAD002D6AFC /* Dashboard */,
 				92DB63791FA9DCBF00F7FF14 /* LandingPages */,
 				92DB62A81FA9C05400F7FF14 /* ViewController.h */,
 				92DB62A91FA9C05400F7FF14 /* ViewController.m */,
@@ -967,6 +994,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				92DB63671FA9D06700F7FF14 /* viewpassword@3x.png in Resources */,
+				1377C02A21BFFD35002D6AFC /* Dashboard.storyboard in Resources */,
 				92DB63651FA9D06700F7FF14 /* arrow-back@3x.png in Resources */,
 				92DB63711FA9D20300F7FF14 /* MessageNotification.xib in Resources */,
 				92DB63641FA9D06700F7FF14 /* erroricon@2x.png in Resources */,
@@ -979,8 +1007,10 @@
 				92DB62AF1FA9C05500F7FF14 /* Assets.xcassets in Resources */,
 				92DB63521FA9D04300F7FF14 /* Dubai-Regular.otf in Resources */,
 				EF37E0C021B7DD6D004C14F8 /* Profile.storyboard in Resources */,
+				1377C02E21BFFD77002D6AFC /* launchImage@3x.png in Resources */,
 				92DB63531FA9D04300F7FF14 /* HelveticaNeueLTArabic-Roman.ttf in Resources */,
 				92DB63571FA9D04300F7FF14 /* Dubai-Medium.otf in Resources */,
+				1377C02D21BFFD77002D6AFC /* launchImage@2x.png in Resources */,
 				92DB63981FA9DEED00F7FF14 /* Localizable.strings in Resources */,
 				92DB63181FA9C19B00F7FF14 /* NSFetchedResultsController.rtf in Resources */,
 				92DB635A1FA9D04300F7FF14 /* HelveticaNeueLTArabic-Light.ttf in Resources */,
@@ -1075,6 +1105,7 @@
 				92DB64481FA9F4E000F7FF14 /* SDWebImagePrefetcher.m in Sources */,
 				92DB63341FA9C35600F7FF14 /* UIViewController+MMDrawerController.m in Sources */,
 				92DB63171FA9C19B00F7FF14 /* CoreDataController.m in Sources */,
+				1377C03321BFFECB002D6AFC /* TS_DashboardViewController.m in Sources */,
 				92F664272192C2AD00B75955 /* VerticalScrollContainer.m in Sources */,
 				92DB64431FA9F4E000F7FF14 /* UIImageView+HighlightedWebCache.m in Sources */,
 				92DB62DC1FA9C08000F7FF14 /* iCarousel.m in Sources */,
@@ -1115,6 +1146,7 @@
 				EF37E0BD21B7D79C004C14F8 /* TPKeyboardAvoidingTableView.m in Sources */,
 				92DB64441FA9F4E000F7FF14 /* UIView+WebCache.m in Sources */,
 				92DB644D1FA9F4E000F7FF14 /* SDImageCacheConfig.m in Sources */,
+				1377C03621C00270002D6AFC /* TS_DashboardCellCollectionViewCell.m in Sources */,
 				92DB62DB1FA9C08000F7FF14 /* UIView+TraverseRadius.m in Sources */,
 				92DB63351FA9C35600F7FF14 /* MMDrawerController.m in Sources */,
 				92DB63371FA9C35600F7FF14 /* MMDrawerBarButtonItem.m in Sources */,
