@@ -8,9 +8,10 @@
 
 #import "TS_DashboardViewController.h"
 #import "TS_DashboardCellCollectionViewCell.h"
+#import "TS_ProjectListViewController.h"
 
 typedef NS_ENUM(NSInteger, DashboardMenuOrder) {
-    kSiteWise,
+    kSiteWise=1,
     kTaskWise,
     kTaskInput,
     kActivity,
@@ -35,33 +36,35 @@ static NSString *image     =   @"image";
     
 //    self.dashArray = [[NSMutableArray alloc] init];
     
-    self.dashArray = @[@{rowIndex : @0,
+    self.dashArray = @[@{rowIndex : [NSNumber numberWithInt:kSiteWise],
                          title : @"Site-Wise",
                          subTitle : @"List Report",
                          image:@"sitewise"
                          },
-                       @{rowIndex : @2,
+                       @{rowIndex : [NSNumber numberWithInt:kTaskWise],
                          title : @"Task-Wise",
                          subTitle : @"List Report",
                          image:@"chart"
                          },
-                       @{rowIndex : @3,
+                       @{rowIndex : [NSNumber numberWithInt:kTaskInput],
                          title : @"Task Input",
                          subTitle : @"Work Input",
                          image:@"task"
                          },
-                       @{rowIndex : @4,
+                       @{rowIndex : [NSNumber numberWithInt:kActivity],
                          title : @"Activity",
                          subTitle : @"Workers activity",
                          image:@"Activity"
                          }
                        ];
 
+    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"Log out" style:UIBarButtonItemStylePlain target:self action:@selector(signoutAction:)]; //[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(signoutAction:)];
+    self.navigationItem.rightBarButtonItem = right;
 
 }
-- (IBAction)signoutAction:(id)sender
+- (void)signoutAction:(id)sender
 {
-    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:@"" message:@"CONFIRM" preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:@"CONFIRM" message:@"Are you sure do you want to signout?" preferredStyle:UIAlertControllerStyleActionSheet];
     
     [actionSheet addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
         // Cancel button tappped.
@@ -70,6 +73,9 @@ static NSString *image     =   @"image";
     
     [actionSheet addAction:[UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
 
+        NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
+        [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }]];
     
     // Present action sheet.
@@ -122,7 +128,18 @@ static NSString *image     =   @"image";
     return cell;
     
 }
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSDictionary *dict = [self.dashArray objectAtIndex:indexPath.row];
 
+    if ([dict[rowIndex] intValue] == kTaskInput) {
+        
+        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"TaskInput" bundle:nil];
+        TS_ProjectListViewController *objProject =[storyBoard instantiateViewControllerWithIdentifier:@"TS_ProjectListViewControllerVC"];
+        
+        [self.navigationController pushViewController:objProject animated:YES];
+    }
+}
 /*
 #pragma mark - Navigation
 

@@ -63,6 +63,13 @@ static DataLayer *sharedInstance = nil;
 -(void)deleteAllNotifications
 {}
 
+-(PropertList*)createPropertyList
+{
+    PropertList * project =[NSEntityDescription insertNewObjectForEntityForName:@"PropertList" inManagedObjectContext:context];
+    
+    return project;
+
+}
 -(User*)createNewUser
 {
     User *obj;

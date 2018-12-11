@@ -2,7 +2,7 @@
 //  TaskList+CoreDataProperties.h
 //  ScrollingPOC
 //
-//  Created by Jeeva on 12/10/18.
+//  Created by Jeeva on 12/11/18.
 //  Copyright © 2018 CPD. All rights reserved.
 //
 //
@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, copy) NSString *taskName;
 @property (nullable, nonatomic, copy) NSString *userEmail;
 @property (nonatomic) int16_t userType;
+@property (nullable, nonatomic, copy) NSDate *startTime;
+@property (nullable, nonatomic, copy) NSDate *endTime;
 
 @end
 

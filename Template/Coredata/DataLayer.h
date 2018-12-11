@@ -31,6 +31,8 @@
 -(User*)createNewUser;
 -(User*)getUserDetailsFromUserName:(NSString*)username;
 
+-(PropertList*)createPropertyList;
+
 -(void)insertQuestion:(id)questionObject;
 -(void)insertSection:(id)sectionObject;
 -(NSArray*)allAnsweredQuestions;
