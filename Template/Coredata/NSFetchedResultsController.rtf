@@ -1,0 +1,141 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1344\cocoasubrtf720
+{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red170\green13\blue145;\red92\green38\blue153;\red100\green56\blue32;
+\red46\green13\blue110;\red0\green116\blue0;\red196\green26\blue22;\red28\green0\blue207;\red63\green110\blue116;
+}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab529
+\pard\tx529\pardeftab529\pardirnatural
+
+\f0\fs22 \cf2 \CocoaLigature0 @property\cf0  (\cf2 nonatomic\cf0 , \cf2 retain\cf0 ) \cf3 NSFetchedResultsController\cf0  *fetchedResultsController;\
+\cf4 \
+\
+\
+\cf0   \cf3 NSError\cf0  *error;\
+    \cf2 if\cf0  (![[\cf2 self\cf0  fetchedResultsController] \cf5 performFetch\cf0 :&error]) \{\
+        \cf6 // Update to handle the error appropriately.\cf0 \
+        \cf4 NSLog\cf0 (\cf7 @"Unresolved error %@, %@"\cf0 , error, [error \cf5 userInfo\cf0 ]);\
+        \cf5 exit\cf0 (-\cf8 1\cf0 );  \cf6 // Fail\cf0 \
+    \}\
+\
+\cf4 \
+\
+#pragma mark - fetchedResultsController Delegates\
+\cf0 \
+- (\cf3 NSFetchedResultsController\cf0  *)fetchedResultsController\{\
+    \
+ \
+    \
+    \cf9 AppDelegate\cf0  *appDelgate=[[\cf3 UIApplication\cf0  \cf5 sharedApplication\cf0 ] \cf5 delegate\cf0 ];\
+    \cf2 if\cf0  (\cf9 _fetchedResultsController\cf0  != \cf2 nil\cf0 ) \{\
+        \cf2 return\cf0  \cf9 _fetchedResultsController\cf0 ;\
+    \}\
+    \
+    \cf3 NSFetchRequest\cf0  *fetchRequest = [[\cf3 NSFetchRequest\cf0  \cf5 alloc\cf0 ] \cf5 init\cf0 ];\
+    \cf3 NSEntityDescription\cf0  *entity = [\cf3 NSEntityDescription\cf0 \
+                                   \cf5 entityForName\cf0 :\cf7 @"VideoDetails"\cf0  \cf5 inManagedObjectContext\cf0 :appDelgate.\cf9 managedObjectContext\cf0 ];\
+    [fetchRequest \cf5 setEntity\cf0 :entity];\
+    \cf6 //[NSPredicate predicateWithFormat:@"ANY groupDetails.groupID = %@",_selectedGroup.groupID]\cf0 \
+    \cf6 //[NSPredicate predicateWithFormat:@"groupDetails.groupID = '%@'",_selectedGroup.groupID]\cf0 \
+       \cf3 NSPredicate\cf0  *predicate = [\cf3 NSPredicate\cf0  \cf5 predicateWithFormat\cf0 :\cf7 @"ANY groupDetails.groupID = %@"\cf0 ,\cf9 _selectedGroup\cf0 .\cf9 groupID\cf0 ];\
+    \cf6 // NSPredicate *predicate = [NSPredicate predicateWithFormat:@"mediaType ='V'"];\cf0 \
+     [fetchRequest \cf5 setPredicate\cf0 :predicate];\
+  \cf6 //  NSLog(@"predicate ---->%@ ---%@",predicate,_selectedGroup.groupID);\cf0 \
+    \cf3 NSSortDescriptor\cf0  *sort = [[\cf3 NSSortDescriptor\cf0  \cf5 alloc\cf0 ]\
+                              \cf5 initWithKey\cf0 :\cf7 @"dateAdded"\cf0  \cf5 ascending\cf0 :\cf2 NO\cf0 ];\
+    [fetchRequest \cf5 setSortDescriptors\cf0 :[\cf3 NSArray\cf0  \cf5 arrayWithObject\cf0 :sort]];\
+    \
+    \cf6 // [fetchRequest setFetchBatchSize:20];\cf0 \
+    \
+    \cf3 NSFetchedResultsController\cf0  *theFetchedResultsController =\
+    [[\cf3 NSFetchedResultsController\cf0  \cf5 alloc\cf0 ] \cf5 initWithFetchRequest\cf0 :fetchRequest\
+                                        \cf5 managedObjectContext\cf0 :appDelgate.\cf9 managedObjectContext\cf0  \cf5 sectionNameKeyPath\cf0 :\cf2 nil\cf0 \
+                                                   \cf5 cacheName\cf0 :\cf2 nil\cf0 ];\
+    \cf2 self\cf0 .\cf9 fetchedResultsController\cf0  = theFetchedResultsController;\
+    \cf9 _fetchedResultsController\cf0 .\cf3 delegate\cf0  =(\cf2 id\cf0 ) \cf2 self\cf0 ;\
+    \cf9 isFetchedResultControllerCalled\cf0 =\cf2 TRUE\cf0 ;\
+    \cf2 return\cf0  \cf9 _fetchedResultsController\cf0 ;\
+    \
+\}\
+- (\cf3 NSInteger\cf0 )tableView:(\cf3 UITableView\cf0  *)tableView\
+ numberOfRowsInSection:(\cf3 NSInteger\cf0 )section \{\
+    \cf2 id\cf0   sectionInfo =\
+    [[\cf9 _fetchedResultsController\cf0  \cf5 sections\cf0 ] \cf5 objectAtIndex\cf0 :section];\
+   \
+    \
+    \cf2 return\cf0  [sectionInfo \cf5 numberOfObjects\cf0 ];\
+\}\
+\
+\
+\
+- (\cf2 void\cf0 )configureCell:(\cf3 UITableViewCell\cf0  *)cell atIndexPath:(\cf3 NSIndexPath\cf0  *)indexPath\
+\{\
+    \cf9 VideoDetails\cf0  *video = [\cf9 _fetchedResultsController\cf0  \cf5 objectAtIndexPath\cf0 :indexPath];\
+   \
+    \cf3 UIView\cf0  *superView=[cell.\cf3 contentView\cf0  \cf5 viewWithTag\cf0 :\cf8 1\cf0 ];\
+    \
+    \cf3 UIImageView\cf0  *thumb=(\cf3 UIImageView\cf0 *)[superView \cf5 viewWithTag\cf0 :\cf8 2\cf0 ];\
+    \cf3 UILabel\cf0  *name=(\cf3 UILabel\cf0 *)[superView \cf5 viewWithTag\cf0 :\cf8 3\cf0 ];\
+\
+    \
+    \
+\}\
+- (\cf2 void\cf0 )controllerWillChangeContent:(\cf3 NSFetchedResultsController\cf0  *)controller \{\
+    \cf6 // The fetch controller is about to start sending change notifications, so prepare the table view for updates.\cf0 \
+    [\cf9 _tblVideoListing\cf0  \cf5 beginUpdates\cf0 ];\
+\}\
+\
+\
+- (\cf2 void\cf0 )controller:(\cf3 NSFetchedResultsController\cf0  *)controller didChangeObject:(\cf2 id\cf0 )anObject atIndexPath:(\cf3 NSIndexPath\cf0  *)indexPath forChangeType:(\cf3 NSFetchedResultsChangeType\cf0 )type newIndexPath:(\cf3 NSIndexPath\cf0  *)newIndexPath \{\
+    \
+    \cf3 UITableView\cf0  *tableView = \cf9 _tblVideoListing\cf0 ;\
+    \cf2 switch\cf0 (type) \{\
+            \
+        \cf2 case\cf0  \cf5 NSFetchedResultsChangeInsert\cf0 :\
+            [tableView \cf5 insertRowsAtIndexPaths\cf0 :[\cf3 NSArray\cf0  \cf5 arrayWithObject\cf0 :newIndexPath] \cf5 withRowAnimation\cf0 :\cf5 UITableViewRowAnimationFade\cf0 ];\
+            \cf2 break\cf0 ;\
+            \
+        \cf2 case\cf0  \cf5 NSFetchedResultsChangeDelete\cf0 :\
+            \
+            \
+            \
+            \
+            [tableView \cf5 deleteRowsAtIndexPaths\cf0 :[\cf3 NSArray\cf0  \cf5 arrayWithObject\cf0 :indexPath] \cf5 withRowAnimation\cf0 :\cf5 UITableViewRowAnimationFade\cf0 ];\
+            \cf2 break\cf0 ;\
+            \
+        \cf2 case\cf0  \cf5 NSFetchedResultsChangeUpdate\cf0 :\
+            \cf2 if\cf0  ([[tableView \cf5 visibleCells\cf0 ] \cf5 containsObject\cf0 :[tableView \cf5 cellForRowAtIndexPath\cf0 :indexPath]]) \{\
+                \cf6 // [self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];\cf0 \
+                [tableView \cf5 reloadData\cf0 ];\
+            \}\
+            \cf2 break\cf0 ;\
+            \
+        \cf2 case\cf0  \cf5 NSFetchedResultsChangeMove\cf0 :\
+            [tableView \cf5 deleteRowsAtIndexPaths\cf0 :[\cf3 NSArray\cf0 \
+                                               \cf5 arrayWithObject\cf0 :indexPath] \cf5 withRowAnimation\cf0 :\cf5 UITableViewRowAnimationFade\cf0 ];\
+            [tableView \cf5 insertRowsAtIndexPaths\cf0 :[\cf3 NSArray\cf0 \
+                                               \cf5 arrayWithObject\cf0 :newIndexPath] \cf5 withRowAnimation\cf0 :\cf5 UITableViewRowAnimationFade\cf0 ];\
+            \cf2 break\cf0 ;\
+    \}\
+\}\
+\
+\
+- (\cf2 void\cf0 )controller:(\cf3 NSFetchedResultsController\cf0  *)controller didChangeSection:(\cf2 id\cf0  )sectionInfo atIndex:(\cf3 NSUInteger\cf0 )sectionIndex forChangeType:(\cf3 NSFetchedResultsChangeType\cf0 )type \{\
+    \
+    \cf2 switch\cf0 (type) \{\
+            \
+        \cf2 case\cf0  \cf5 NSFetchedResultsChangeInsert\cf0 :\
+            [\cf9 _tblVideoListing\cf0  \cf5 insertSections\cf0 :[\cf3 NSIndexSet\cf0  \cf5 indexSetWithIndex\cf0 :sectionIndex] \cf5 withRowAnimation\cf0 :\cf5 UITableViewRowAnimationFade\cf0 ];\
+            \cf2 break\cf0 ;\
+            \
+        \cf2 case\cf0  \cf5 NSFetchedResultsChangeDelete\cf0 :\
+            [\cf9 _tblVideoListing\cf0  \cf5 deleteSections\cf0 :[\cf3 NSIndexSet\cf0  \cf5 indexSetWithIndex\cf0 :sectionIndex] \cf5 withRowAnimation\cf0 :\cf5 UITableViewRowAnimationFade\cf0 ];\
+            \cf2 break\cf0 ;\
+    \}\
+\}\
+\
+\
+- (\cf2 void\cf0 )controllerDidChangeContent:(\cf3 NSFetchedResultsController\cf0  *)controller \{\
+    \cf6 // The fetch controller has sent all current change notifications, so tell the table view to process all updates.\cf0 \
+    [\cf9 _tblVideoListing\cf0  \cf5 endUpdates\cf0 ];\
+\}}

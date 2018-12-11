@@ -1,0 +1,28 @@
+//
+//  PrefixHeader.pch
+//  Template
+//
+//  Created by Anthony on 11/1/17.
+//  Copyright © 2017 CPD. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+#import <Availability.h>
+#import <UIKit/UIKit.h>
+#import "StoryboarIds.h"
+#import <CoreData/CoreData.h>
+#import "User+CoreDataClass.h"
+#import "TaskList+CoreDataClass.h"
+#import "PropertList+CoreDataClass.h"
+#import "DataLayer.h"
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* PrefixHeader_pch */
+//#define IS_OS_8_OR_LATER ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+#ifdef DEBUG
+#   define NSLog(...) NSLog(__VA_ARGS__)
+#else
+#   define NSLog(...)
+#endif

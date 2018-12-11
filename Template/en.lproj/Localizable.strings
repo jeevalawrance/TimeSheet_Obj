@@ -1,0 +1,90 @@
+/*
+ Localizable.strings
+ Template
+ 
+ Created by Anthony on 8/16/15.
+ Copyright (c) 2015 CPD. All rights reserved.
+ */
+
+"Accounts"  ="Accounts";
+"Email" ="Email";
+"Password"  ="Password";
+"Username"  ="Username";
+"SignUp"                       =       "Sign Up";
+
+"Please enter a valid email"    ="Please enter a valid email";
+"Username should be atleast 3 characters"  ="Username should be atleast 3 characters";
+"Password cannot be empty"  ="Password cannot be empty";
+"Confirm"   ="CONFIRM";
+"Login" ="Login";
+"Register" ="Register";
+"Mobile" =    "Mobile";
+"Full Name" = "Full Name";
+"Confirm Password"="Confirm Password";
+"PasswordMismatch"="Both password & confirm password must be same";
+
+"Reset Password"="Reset Password";
+
+"Fullname cannot be empty" = "Full name cannot be empty";
+"Mobile Number cannot be empty" = "Mobile Number cannot be empty";
+"Reset Password Title"="Enter your email address below to recieve your password reset instruction.";
+"RegisterationSuccessTitle" = "Success";
+
+"Remember Me"   ="Remember Me";
+"Forgot Password"   ="Forgot Password";
+"Submit"    ="SUBMIT";
+"OK"    ="OK";
+"Cancel"    ="Cancel";
+"Please enter atleast one character"    ="Please enter atleast one character";
+"Gender"    ="Gender";
+"Country"   ="Country";
+"Photo" ="Photo";
+"Add"   ="Add";
+"Save"  ="Save";
+"Edit"  ="Edit";
+"Are you sure you want to delete"   ="Are you sure you want to delete";
+"Yes"   ="Yes";
+"No"    ="No";
+"Recipients"    ="Recipients";
+"Search Recipients" ="Search Recipients";
+"Confirmation"  ="Confirmation";
+"Confirm"   ="CONFIRM";
+"Next"   ="NEXT";
+"No changes to update"  ="No changes to update";
+"Logout"    ="Logout";
+"Are you sure you want to logout"   ="Are you sure you want to logout";
+"Account Details"   ="Account Details";
+"Name"  ="Name";
+"Phone Number"  ="Phone Number";
+"Change Password"   ="Change Password";
+"Current Password"  ="Current Password";
+"New Password"  ="New Password";
+"Old Password"  ="Old Password";
+"Uploading Images"="Uploading Images";
+"No Record Found" ="No Record Found";
+"Change Language"="Are you sure you want to change language";
+"Falcon ID: XXXX was added to the List."    ="Falcon ID: %@ was added to the List.";
+"NoActiveInternet"      ="Please check your internet connectivity";
+
+
+"Read More"         ="READ MORE";
+"Recent Medias"     ="Recent Media";
+"No Data Found"     ="No Data Found";
+"NoSearchReultsFound"="No search results found";
+"Related News"      ="Related News";
+"ShowingSearchResultsXXOfYY"="Showing results %d - %d of %d for ";
+
+
+"If you love our app,Please take a moment to rate it in the App Store"= "If you love our app,Please take a moment to rate it in the App Store";
+
+"Remind me later" ="Remind me later";
+
+"Yes,Rate it!!"="Yes,Rate it!!";
+"Don't ask again"="Don't ask again";
+
+"Rate" ="Rate";
+
+
+
+
+

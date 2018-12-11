@@ -1,0 +1,93 @@
+/*
+ Localizable.strings
+ Template
+ 
+ Created by Anthony on 8/16/15.
+ Copyright (c) 2015 CPD. All rights reserved.
+ */
+
+"Accounts"  ="الحسابات";
+"Email" ="البريد الإلكتروني";
+"Password"  ="كلمة المرور";
+"Username"  ="اسم المستخدم";
+"SignUp"                       =       "التسجيل";
+"Register" ="الاشتراك";
+"Mobile" =    "الهاتف المتحرك";
+
+"Full Name" = "Full Name";
+"Fullname cannot be empty" = "Full name cannot be empty";
+"Mobile Number cannot be empty" = "Mobile Number cannot be empty";
+"RegisterationSuccessTitle" = "Success";
+
+
+"Confirm Password"="تأكيد كلمة السر";
+"PasswordMismatch"="يجب أن تكونا كلمة السر وكلمة السر التأكيدية مماثلة";
+
+"Reset Password"=   "إعادة تعيين كلمة السر";
+"Reset Password Title"=   "قم بإدخال بريدك الإلكتروني حتى نتمكن من إرسال تعليمات تغيير كلمة المرور.";
+
+
+"Please enter a valid email"    ="يرجى إدخال البريد الإلكتروني الصحيح";
+"Username should be atleast 3 characters"  ="يجب أن يكون اسم المستخدم مكون من ثلاثة أحرف على الأقل";
+"Password cannot be empty"  ="كلمة المرور مطلوبة";
+"Confirm"   ="تأكيد";
+"Login" ="تسجيل الدخول";
+"Remember Me"   ="تذكرني";
+"Forgot Password"   ="نسيت كلمة المرور";
+"Submit"    ="إرسال";
+"OK"    ="موافق";
+"Cancel"    ="إلغاء";
+"Please enter atleast one character"    ="الرجاء إدخال حرف واحد على الأقل";
+"Gender"    ="الجنس";
+"Country"   ="البلد";
+"Country"   ="البلد";
+"Photo" ="الصورة";
+"Add"   ="إضافة";
+"Save"  ="حفظ";
+"Edit"  ="تعديل";
+"Logout"    ="تسجيل خروج";
+"Are you sure you want to delete"   ="تأكيد عملية الحذف";
+"Yes"   ="نعم";
+"No"    ="لا";
+"Recipients"    ="المستلمون";
+"Search Recipients" ="بحث المستلمون";
+"Confirmation"  ="تأكيد";
+"Next"   ="تأكيد";
+"Confirm"   ="التالي";
+"No changes to update"  ="لا يوجد بيانات للتحديث";
+"Accounts"  ="الحسابات";
+"Logout"    ="تسجيل خروج";
+"Are you sure you want to logout"   ="تأكيد عملية تسجيل الخروج";
+"Account Details"   ="تفاصيل الحساب";
+"Name"  ="الإسم";
+"Change Password"   ="تغيير كلمة المرور";
+"Current Password"  ="كلمة المرور الحالية";
+"New Password"  ="كلمة المرور الجديدة";
+"Old Password"  ="كلمة المرور القديمة";
+"Uploading Images"="تحميل الصور";
+"No Record Found" ="لم يتم العثور على أي سجل";
+"Change Language"="تأكيد إختيار اللغة";
+
+
+
+
+"Read More"                 ="إقرأ المزيد";
+"Recent Medias"             ="آخر الملفات المرئية والمسموعة";
+"No Data Found"             ="لا يوجد بيانات";
+"NoSearchReultsFound"       =" لا توجد نتائج بحث";
+"ShowingSearchResultsXXOfYY"="عرض النتائج %d من %d";
+"NoActiveInternet"             =" لا يوجد إتصال بالإنترنت";
+"No Videos found"            =" لم يتم العثور على فيديو";
+"No Audios found"            ="لم يتم العثور على ملف صوتي";
+
+
+"If you love our app,Please take a moment to rate it in the App Store"= "If you love our app,Please take a moment to rate it in the App Store";
+
+"Remind me later" ="Remind me later";
+
+"Yes,Rate it!!"="Yes,Rate it!!";
+
+"Don't ask again"="Don't ask again";
+
+
+
