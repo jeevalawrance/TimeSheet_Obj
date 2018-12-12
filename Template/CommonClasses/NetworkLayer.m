@@ -14,6 +14,10 @@
 #import "URLConstants.h"
 #import "CommonFunction.h"
 #import "Reachability.h"
+#import "AFHTTPRequestOperationManager.h"
+#import "AFHTTPRequestOperation.h"
+
+
 static int FailAttempt= 5;
 
 static NetworkLayer *sharedInstance = nil;
@@ -108,6 +112,53 @@ static NetworkLayer *sharedInstance = nil;
     
     
     
+}
+#pragma mark- LOCATION
+- (void)getNearestLocationWebservice:(CLLocation*)currentLocation andUrl:(NSString*)url Completion:(void (^)(BOOL success, NSArray* places, NSError *error))completion
+{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    //[manager.requestSerializer setAuthorizationHeaderFieldWithUsername:AssetServerUsername password:AssetServerPassword];
+    
+    
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    //    NSString *url=[NSString stringWithFormat:@"%@api/Account/Register",AssetBaseURLString];
+    //    NSString *url = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%f,%f&radius=5000&sensor=true&key=%@",currentLocation.coordinate.latitude,currentLocation.coordinate.longitude,kGoogleServerKey];
+    
+    
+    [manager POST:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        
+        NSData *data= [[operation responseString] dataUsingEncoding:NSUTF8StringEncoding];
+        NSError *error;
+        
+        NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:data
+                                                                 options:kNilOptions
+                                                                   error:&error];
+        
+        if ([jsonDict[@"results"] isKindOfClass:[NSArray class]]) {
+            
+            NSArray *places;
+            
+            places =jsonDict[@"results"];
+            
+            //            completionBlock(places);
+            
+            completion(TRUE,places,nil);
+            
+            
+        }
+        else
+        {
+            completion(FALSE,nil,error);
+        }
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"error %@",[error localizedDescription]);
+        NSMutableDictionary* userInfo = [NSMutableDictionary dictionary];
+        [userInfo setValue:[error localizedDescription] forKey:NSLocalizedDescriptionKey];
+        completion(FALSE,nil,error);
+    }];
 }
 
 #pragma mark - Base Webservice Method

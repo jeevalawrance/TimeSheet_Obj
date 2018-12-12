@@ -35,24 +35,8 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Template/ViewControllers/Task/LocationShareViewController.m"
-            timestampString = "566248064.557297"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1065"
-            endingLineNumber = "1065"
-            landmarkName = "-selectedLocation:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Template/ViewControllers/Task/TS_ProjectCreationViewController.m"
-            timestampString = "566248064.558254"
+            timestampString = "566329982.137949"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "27"
@@ -68,28 +52,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Template/ViewControllers/Task/LocationShareViewController.m"
-            timestampString = "566248103.1116281"
+            timestampString = "566336602.580225"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "203"
-            endingLineNumber = "203"
-            landmarkName = "-longPressTap:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Template/ViewControllers/Task/LocationShareViewController.m"
-            timestampString = "566248161.343703"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "861"
-            endingLineNumber = "861"
-            landmarkName = "-selectedLocationApi:withUrl:completionHandler:"
+            startingLineNumber = "327"
+            endingLineNumber = "327"
+            landmarkName = "-nearestWS"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "CommonHeaders.h"
+#import <CoreLocation/CoreLocation.h>
 //@class TeamScoreViewController;
 @interface NetworkLayer : NSObject{
 
@@ -19,5 +21,6 @@
 - (void)registerWithparams:(NSDictionary*)params Completion:(void (^)(BOOL success,id responseObject, NSError *error))completion;
 - (void)loginWithParams:(NSDictionary*)params Completion:(void (^)(BOOL success,id responseObject, NSError *error))completion;
 - (void)downloaSqliteToPath:(NSString *)filePath withServerURL:(NSString *)serverURL withCompletion:(void (^)(BOOL completed, NSURL *source_url, NSError *error))completion;
+- (void)getNearestLocationWebservice:(CLLocation*)currentLocation andUrl:(NSString*)url Completion:(void (^)(BOOL success, NSArray* places, NSError *error))completion;
 
 @end

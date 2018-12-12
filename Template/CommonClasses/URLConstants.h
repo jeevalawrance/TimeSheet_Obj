@@ -51,6 +51,11 @@
 
 #define adminCommonBGColor [UIColor colorWithRed:(232.0f/255.0f) green:(232.0f/255.0f) blue:(232.0f/255.0f) alpha:1]
 
+#define kThemeBGColor [UIColor colorWithRed:(232.0f/255.0f) green:(232.0f/255.0f) blue:(232.0f/255.0f) alpha:1]
+
+#define kNavigationButtonColor UIColorFromRGB(0xffffff)
+#define kThemeTextColor UIColorFromRGB(0xffffff)
+#define kThemeTableSeperatorColor UIColorFromRGB(0x2b2b2b)
 
 
 #define kColorGoldenTopBar [UIColor colorWithRed:(198.0f/255.0f) green:(157.0f/255.0f) blue:(47.0f/255.0f) alpha:1]

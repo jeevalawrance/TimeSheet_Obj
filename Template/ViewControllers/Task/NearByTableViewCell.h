@@ -11,5 +11,6 @@
 @interface NearByTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *lblTitle;
 @property (weak, nonatomic) IBOutlet UILabel *lblSubtitle;
+@property (weak, nonatomic) IBOutlet UIImageView *thumpImageView;
 
 @end

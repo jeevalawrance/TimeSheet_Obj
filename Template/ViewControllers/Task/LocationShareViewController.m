@@ -12,25 +12,22 @@
 #import "NearLocation.h"
 #import "NearByTableViewCell.h"
 #import "MKMapView+ZoomLevel.h"
-#import "MBProgressHUD.h"
-#import "CommonFunction.h"
 #import "URLConstants.h"
+#import "MyAnnotation.h"
+#import "NetworkLayer.h"
+#import "AGPullViewconfigurator.h"
+#import "CommonFunction.h"
+#import "CommonHeaders.h"
 
 
-
-
-#define kFourSquare @"54X53BEVGQ5RBXZ4QUKZOYFISV22CNU3W2U03W5GQM4NIJ4A"
-
-#define kTopNearConstraint 224
-
-#define kMapViewHeightConstraint 160
+#define kMapViewHeightConstraint 360
 
 #define ZOOM_LEVEL 10
 
 #define kSearchString @"kSearchString"
 #define kReloadImage [[UIImage imageNamed:@"reload_location.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
 
-@interface LocationShareViewController () <UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource,CLLocationManagerDelegate>
+@interface LocationShareViewController () <UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource,CLLocationManagerDelegate,MKMapViewDelegate,AGConfiguratorDelegate>
 {
     
     __weak IBOutlet NSLayoutConstraint *widthReloadCpnstraints;
@@ -42,6 +39,7 @@
     
     NSMutableArray *recentSearches;
     NSMutableArray *nearByDetails;
+    NSMutableArray *nearByLocationDetails;
     
     __weak IBOutlet NSLayoutConstraint *heightMapviewConstraint;
     __weak IBOutlet NSLayoutConstraint *topNearByTblConstraint;
@@ -62,16 +60,25 @@
     BOOL isDragging;
     
     BOOL locationSelected;
-
+    
     float safeAreaInsetBottom;
     
-    BOOL isActivityShowed;
-
+    float constantBottom;
+    
+    BOOL mapHideFromInfoButton;
 }
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
 @property (nonatomic,strong) CLLocationManager *locationManager;
+@property (weak, nonatomic) IBOutlet UIView *viewMapSettings;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
+@property (weak, nonatomic) IBOutlet UILabel *lblMapSettings;
+@property (weak, nonatomic) IBOutlet UIButton *btnCloseMapSettings;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mapViewBottomConstraint;
+@property (nonatomic, strong) AGPullViewConfigurator *configurator;
+@property (nonatomic, strong)  UITableView *nearLocationTableView;
+//@property (weak, nonatomic) IBOutlet UITableView *nearLocationTableView;
 
 @end
 
@@ -79,24 +86,30 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-//    self.view.backgroundColor = kThemeBGColor;
-
+    
+    //    self.mapView.delegate = self;
+    self.mapView.showsUserLocation = YES;
+    
+    self.view.backgroundColor = kThemeBGColor;
+    
+    [btnCancel setTitleColor:kNavigationButtonColor forState:UIControlStateNormal];
+    
     self.locationManager = [[CLLocationManager alloc] init];
-    self.locationManager.delegate = self;
+    //    self.locationManager.delegate = self;
     self.locationManager.distanceFilter = kCLDistanceFilterNone;
     self.locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
-//    btnReload.tintColor = kNavigationButtonColor;
-//    btnCancel.tintColor = kNavigationButtonColor;
-//    _tblRecentSearch.backgroundColor = kThemeBGColor;
-//    _tblLocationNearby.backgroundColor = kThemeBGColor;
+    btnReload.tintColor = kNavigationButtonColor;
+    //    btnCancel.tintColor = kNavigationButtonColor;
+    _tblRecentSearch.backgroundColor = kThemeBGColor;
+    _tblLocationNearby.backgroundColor = kThemeBGColor;
     [btnReload setImage:kReloadImage forState:UIControlStateNormal];
     
-//    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setDefaultTextAttributes:@{NSForegroundColorAttributeName:kThemeTextColor}];
-//    searchBarNav.tintColor = kThemeTextColor;
-
-//    _tblRecentSearch.separatorColor = kThemeTableSeperatorColor;
-//    _tblLocationNearby.separatorColor = kThemeTableSeperatorColor;
+    
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setDefaultTextAttributes:@{NSForegroundColorAttributeName:kThemeTextColor}];
+    searchBarNav.tintColor = kThemeTextColor;
+    
+    _tblRecentSearch.separatorColor = kThemeTableSeperatorColor;
+    _tblLocationNearby.separatorColor = kThemeTableSeperatorColor;
     
     safeAreaInsetBottom = 0.0;
     if (@available(iOS 11.0, *)) {
@@ -104,31 +117,80 @@
     } else {
         // Fallback on earlier versions
     }
-    [self showActivity];
-
-//    [self performSelectorInBackground:@selector(checkLocationService) withObject:nil];
-
-    [self checkLocationService];
+    
+    self.mapViewBottomConstraint.constant = 130+safeAreaInsetBottom;
+    
+    constantBottom = safeAreaInsetBottom;
+    self.viewMapSettings.hidden= YES;
+    
+    
+    //    [self checkLocationService];
     
     nearByDetails = [[NSMutableArray alloc] init];
     recentSearches = [[NSMutableArray alloc] init];
+    nearByLocationDetails= [[NSMutableArray alloc]init];
+    
+    
+    nearByLocationDetails[0] = @{@"image" : [UIImage imageNamed:@"mylocation_blue.png"] , @"text" : @"My Location", @"subtitle" : @" "};
+    nearByLocationDetails[1] = @{@"image" : [UIImage imageNamed:@"placesicon.png"] , @"text" : @"Nearby places", @"subtitle" : @"Pull up to see nearby places"};
+    
+    nearByDetails[0] = @{@"image" : @"" , @"text" : @"", @"subtitle" : @" "};
+    nearByDetails[1] = @{@"image" : [UIImage imageNamed:@"mylocation_blue.png"] , @"text" : @"My Location", @"subtitle" : @" "};
+    nearByDetails[2] = @{@"image" : [UIImage imageNamed:@"placesicon.png"] , @"text" : @"Nearby places", @"subtitle" : @"Pull up to see nearby places"};
+    // Do any additional setup after loading the view.
     
     _tblRecentSearch.tableFooterView=[[UIView alloc] initWithFrame:CGRectZero];
     
     _tblLocationNearby.tableFooterView=[[UIView alloc] initWithFrame:CGRectZero];
     
-    UILongPressGestureRecognizer *tapRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressTap:)];
-    
-    tapRecognizer.minimumPressDuration= 0.5;
-    
-    [self.mapView addGestureRecognizer:tapRecognizer];
+    //    UILongPressGestureRecognizer *tapRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressTap:)];
+    //
+    //    tapRecognizer.minimumPressDuration= 0.5;
+    //
+    //    [self.mapView addGestureRecognizer:tapRecognizer];
     
     
     currentLocationAnnotation = [[MKPointAnnotation alloc] init];
     
     CADisplayLink *link = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateViewsBasedOnMapRegion:)];
     [link addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
-
+    
+    [self HidePlaces];
+    
+    //AGPullView configuration
+    self.configurator = [AGPullViewConfigurator new];
+    [self.configurator setupPullViewForSuperview:self.view colorScheme:ColorSchemeTypeWhite];
+    self.configurator.percentOfFilling = @50;
+    self.configurator.delegate = self;
+    self.configurator.needBounceEffect = true;
+    self.configurator.animationDuration = @0.3;
+    self.configurator.enableShowingWithTouch = true;
+    self.configurator.enableHidingWithTouch = false;
+    
+    [self.configurator enableBlurEffectWithBlurStyle:UIBlurEffectStyleLight];
+    
+    
+    //Test UITableView
+    self.nearLocationTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 300, 300) style:UITableViewStylePlain];
+    self.nearLocationTableView.dataSource = self;
+    //    nearLocationTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.nearLocationTableView.backgroundColor = [UIColor whiteColor];
+    
+    //Filling whole AGPullView with test UITableView
+    [self.configurator fullfillContentViewWithView:self.nearLocationTableView];
+    
+    self.nearLocationTableView.backgroundColor = kThemeBGColor;
+    
+    UINib *nib = [UINib nibWithNibName:@"NearByTableViewCell" bundle:nil];
+    
+    [self.nearLocationTableView registerNib:nib forCellReuseIdentifier:@"neartableViewCell"];
+    
+    //TblNearest UITableView
+    //    self.nearLocationTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 300, 300) style:UITableViewStyleGrouped];
+    //    nearLocationTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    //Filling whole AGPullView with test UITableView
+    //    [self.configurator fullfillContentViewWithView:self.tblLocationNearby];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -137,38 +199,53 @@
     
     isFindNearestLocation=NO;
     
-    [self.locationManager startUpdatingLocation];
-
+    //    [self.locationManager startUpdatingLocation];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [CommonFunction removeLoaderFromViewController:self];
+        [CommonFunction showLoaderInViewController:self];
+    });
+    
 }
-
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:YES];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.configurator showAnimated:YES forPercent:30];
+    });
+    
+    //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    //        [self.configurator showAnimated:YES forPercent:50];
+    //    });
+    //
+    //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    //        [self.configurator showAnimated:YES forPercent:100];
+    //    });
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.mapView.delegate = self;
+        self.locationManager.delegate = self;
+        //    [self.locationManager startUpdatingLocation];
+        CLLocation *defaultLocation = [[CLLocation alloc] initWithLatitude:25.276987 longitude:55.296249];
+        [self.mapView setCenterCoordinate:defaultLocation.coordinate animated:YES];
+        
+        [self checkLocationService];
+    });
+    
+    
+}
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:YES];
     
     [self.locationManager stopUpdatingLocation];
-
+    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
--(void)showActivity
-{
-    if (isActivityShowed) {
-        
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-    }
-    isActivityShowed = YES;
-    
-     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-}
--(void)hideActivity
-{
-    [MBProgressHUD hideHUDForView:self.view animated:YES];
-    
-    isActivityShowed = NO;
-}
 -(void)longPressTap:(UILongPressGestureRecognizer*)recognizer
 {
     if (recognizer.state != UIGestureRecognizerStateBegan)
@@ -197,7 +274,7 @@
     //    [self selectedLocationApi:location];
     
     NSString *strUrl =[NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/geocode/json?latlng=%f,%f&sensor=true&key=%@",location.latitude,location.longitude,kGoogleServerKey];
-
+    
     [self selectedLocationApi:location withUrl:strUrl completionHandler:^(NSArray *places) {
         
         if (places.count > 0) {
@@ -230,121 +307,159 @@
 }
 
 #pragma mark- WEBSERVICE
+
 -(void)nearestWS
 {
-//    [CommonFunction removeLoaderFromViewController:self];
-//    [CommonFunction showLoaderInViewController:self];
     
-    [self showActivity];
-
+    [CommonFunction removeLoaderFromViewController:self];
+    [CommonFunction showLoaderInViewController:self];
+    
     // http://ncalculators.com/area-volume/circle-calculator.htm (radius to meter converter)
-//    NSString *strUrl = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%f,%f&radius=5000&sensor=true&key=%@",userCurrentLocation.coordinate.latitude,userCurrentLocation.coordinate.longitude,kGoogleServerKey];
+    //    NSString *strUrl = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%f,%f&radius=5000&sensor=true&key=%@",userCurrentLocation.coordinate.latitude,userCurrentLocation.coordinate.longitude,kGoogleServerKey];
     
     if([CommonFunction isActiveInternet])
     {
         NSString *strUrl = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%f,%f&radius=5000&sensor=true&key=%@",userCurrentLocation.coordinate.latitude,userCurrentLocation.coordinate.longitude,kGoogleServerKey];
         
-        [self selectedLocationApi:currentLocationAnnotation.coordinate withUrl:strUrl completionHandler:^(NSArray *places) {
-            
-            if (places.count > 0) {
+        CLLocation *loc = [[CLLocation alloc] initWithLatitude:currentLocationAnnotation.coordinate.latitude longitude:currentLocationAnnotation.coordinate.longitude];
+        
+        [[NetworkLayer getInstance] getNearestLocationWebservice:loc andUrl:strUrl Completion:^(BOOL success, NSArray *places, NSError *error) {
+            if (success) {
                 
-                for (NSDictionary *place in places) {
+                if (places.count > 0) {
                     
                     
-                    NSString *iconUrl=@"";// = [self getPhotosURL:place[@"photos"]];
-                    
-                    //                    if ([place[@"photos"] count]>0) {
-                    //
-                    //                        iconUrl = [self getPhotosURL:[place[@"photos"] lastObject]];
-                    //                    }
-                    
-                    NSDictionary *location = [place[@"geometry"] objectForKey:@"location"];
-                    
-                    NSString *LocId= place[@"id"];
-                    
-                    NSString *name;
-                    
-                    if (place[@"name"]) {
+                    if(nearByDetails.count > 3)
+                    {
+                        [nearByDetails removeObjectsInRange:NSMakeRange(3, nearByDetails.count-3)];
                         
-                        name = place[@"name"];
                     }
-                    else{
-                        name=place[@"vicinity"];
+                    if(nearByLocationDetails.count > 2)
+                    {
+                        [nearByLocationDetails removeObjectsInRange:NSMakeRange(2, nearByDetails.count-2)];
+                        
+                    }
+                    for (NSDictionary *place in places) {
+                        
+                        
+                        NSString *iconUrl=@"";// = [self getPhotosURL:place[@"photos"]];
+                        
+                        //                    if ([place[@"photos"] count]>0) {
+                        //
+                        //                        iconUrl = [self getPhotosURL:[place[@"photos"] lastObject]];
+                        //                    }
+                        
+                        NSDictionary *location = [place[@"geometry"] objectForKey:@"location"];
+                        
+                        NSString *LocId= place[@"id"];
+                        
+                        NSString *name;
+                        
+                        if (place[@"name"]) {
+                            
+                            name = place[@"name"];
+                        }
+                        else{
+                            name=place[@"vicinity"];
+                        }
+                        
+                        NearLocation *objLocation =[[NearLocation alloc] initWithImageName:iconUrl title:name withLatitude:[location[@"lat"] doubleValue] withLongtitude:[location[@"lng"] doubleValue] withLocationId:LocId withAddress:place[@"vicinity"]];
+                        // do something with the icon URL
+                        
+                        [nearByDetails addObject:objLocation];
+                        [nearByLocationDetails addObject:objLocation];
                     }
                     
-                    NearLocation *objLocation =[[NearLocation alloc] initWithImageName:iconUrl title:name withLatitude:[location[@"lat"] doubleValue] withLongtitude:[location[@"lng"] doubleValue] withLocationId:LocId withAddress:place[@"vicinity"]];
-                    // do something with the icon URL
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        
+                        //When json is loaded stop the indicator
+                        
+                        //                    [CommonFunction removeLoaderFromViewController:self];
+                        
+                        [self.tblLocationNearby setHidden:NO];
+                        [self.tblRecentSearch setHidden:YES];
+                        
+                        [self.tblLocationNearby reloadData];
+                        [self.nearLocationTableView reloadData];
+                        [CommonFunction removeLoaderFromViewController:self];
+                        
+                        [self getAddressFromCordinate:currentLocationAnnotation.coordinate];
+                        
+                        
+                        // ADDING ANNOTATION
+                        //                    NSArray *annotations = [self createAnnotations];
+                        //
+                        //                    [self.mapView addAnnotations:annotations];
+                        
+                        [self addAnnotationsInMapview];
+                        
+                        currentLocationAnnotation.title = @"Send this location";
+                        currentLocationAnnotation.coordinate = userCurrentLocation.coordinate;
+                        [self.mapView addAnnotation:currentLocationAnnotation];
+                    });
                     
-                    [nearByDetails addObject:objLocation];
                 }
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    //When json is loaded stop the indicator
+                else{
+                    [CommonFunction removeLoaderFromViewController:self];
                     
-//                    [CommonFunction removeLoaderFromViewController:self];
-                    
-                    [self.tblLocationNearby setHidden:NO];
-                    [self.tblRecentSearch setHidden:YES];
-                    
-                    [self.tblLocationNearby reloadData];
-                    
-                    [self hideActivity];
-
-                    [self getAddressFromCordinate:currentLocationAnnotation.coordinate];
-                    
-                });
-                
+                }
             }
-            else{
+            else
+            {
                 [CommonFunction removeLoaderFromViewController:self];
+                
+                [CommonFunction displayTheToastWithMsg:@"No internet connection !" duration:1.5];
                 
             }
         }];
     }
     else{
-        //                    [CommonFunction removeLoaderFromViewController:self];
-        
-        [self hideActivity];
+        [CommonFunction removeLoaderFromViewController:self];
         
         [CommonFunction displayTheToastWithMsg:@"No internet connection !" duration:1.5];
         
     }
 }
+
 #pragma mark- Mapview Delegate
 
 //- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
 //{
 //    NSLog(@"clicked");
 //}
-- (MKAnnotationView *) mapView: (MKMapView *) mapView viewForAnnotation: (id<MKAnnotation>) annotation {
-  
-    MKPinAnnotationView *annotationView = (MKPinAnnotationView *) [mapView dequeueReusableAnnotationViewWithIdentifier: @"annotation_ID"];
-    if (annotationView == nil) {
-        annotationView = [[MKPinAnnotationView alloc] initWithAnnotation: annotation reuseIdentifier: @"annotation_ID"];
-    } else {
-        annotationView.annotation = annotation;
-    }
-    
-    if ([annotation.title isEqualToString:@"Send this location"]) {
-        
-        annotationView.pinTintColor = UIColor.greenColor;
-        
-        //        annotationView.leftCalloutAccessoryView = nil;
-        
-    }
-    else{
-        
-        annotationView.pinTintColor = UIColor.redColor;
-        
-        //        annotationView.leftCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-        
-        
-    }
-    annotationView.animatesDrop = YES;
-    annotationView.canShowCallout=YES;
-    
-    return annotationView;
-}
+
+/*
+ - (MKAnnotationView *) mapView: (MKMapView *) mapView viewForAnnotation: (id<MKAnnotation>) annotation {
+ 
+ MKPinAnnotationView *annotationView = (MKPinAnnotationView *) [mapView dequeueReusableAnnotationViewWithIdentifier: @"annotation_ID"];
+ if (annotationView == nil) {
+ annotationView = [[MKPinAnnotationView alloc] initWithAnnotation: annotation reuseIdentifier: @"annotation_ID"];
+ } else {
+ annotationView.annotation = annotation;
+ }
+ 
+ if ([annotation.title isEqualToString:@"Send this location"]) {
+ 
+ annotationView.pinTintColor = UIColor.greenColor;
+ 
+ //        annotationView.leftCalloutAccessoryView = nil;
+ 
+ }
+ else{
+ 
+ annotationView.pinTintColor = UIColor.redColor;
+ 
+ //        annotationView.leftCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+ 
+ 
+ }
+ annotationView.animatesDrop = YES;
+ annotationView.canShowCallout=YES;
+ 
+ return annotationView;
+ }
+ 
+ */
 -(void) calloutTapped:(UITapGestureRecognizer*) sender {
     
     if ([sender.view isKindOfClass:[MKAnnotationView class]]) {
@@ -378,28 +493,28 @@
         
         currentLocationAnnotation.coordinate = mapView.region.center;
         
-//        NSString *strUrl =[NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/geocode/json?latlng=%f,%f&sensor=true",currentLocationAnnotation.coordinate.latitude,currentLocationAnnotation.coordinate.longitude];
+        //        NSString *strUrl =[NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/geocode/json?latlng=%f,%f&sensor=true",currentLocationAnnotation.coordinate.latitude,currentLocationAnnotation.coordinate.longitude];
         
         [self getAddressFromCordinate:currentLocationAnnotation.coordinate];
-
-      /*  [self selectedLocationApi:currentLocationAnnotation.coordinate withUrl:strUrl completionHandler:^(NSArray *places) {
-            
-            if (places.count > 0) {
-                
-                NSDictionary *place =[places firstObject];
-                
-                currentLocationAnnotation.title=place[@"formatted_address"];
-                if ([place[@"address_components"] count]>0) {
-
-                    currentLocationAnnotation.subtitle=[[place[@"address_components"] firstObject] objectForKey:@"long_name"];
-
-                }
-                
-//                [self.mapView addAnnotation:currentLocationAnnotation];
-                
-                
-            }
-        }];*/
+        
+        /*  [self selectedLocationApi:currentLocationAnnotation.coordinate withUrl:strUrl completionHandler:^(NSArray *places) {
+         
+         if (places.count > 0) {
+         
+         NSDictionary *place =[places firstObject];
+         
+         currentLocationAnnotation.title=place[@"formatted_address"];
+         if ([place[@"address_components"] count]>0) {
+         
+         currentLocationAnnotation.subtitle=[[place[@"address_components"] firstObject] objectForKey:@"long_name"];
+         
+         }
+         
+         //                [self.mapView addAnnotation:currentLocationAnnotation];
+         
+         
+         }
+         }];*/
         
     }
     
@@ -411,23 +526,28 @@
 -(void)getAddressFromCordinate:(CLLocationCoordinate2D)location
 {
     NSString *strUrl =[NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/geocode/json?latlng=%f,%f&sensor=true&key=%@",location.latitude,location.longitude,kGoogleServerKey];
-
-    [self selectedLocationApi:currentLocationAnnotation.coordinate withUrl:strUrl completionHandler:^(NSArray *places) {
+    
+    CLLocation *loc = [[CLLocation alloc] initWithLatitude:currentLocationAnnotation.coordinate.latitude longitude:currentLocationAnnotation.coordinate.longitude];
+    
+    [[NetworkLayer getInstance] getNearestLocationWebservice:loc andUrl:strUrl Completion:^(BOOL success, NSArray *places, NSError *error) {
         
-        if (places.count > 0) {
+        if (success) {
             
-            NSDictionary *place =[places firstObject];
-            
-            currentLocationAnnotation.title=place[@"formatted_address"];
-            if ([place[@"address_components"] count]>0) {
+            if (places.count > 0) {
                 
-                currentLocationAnnotation.subtitle=[[place[@"address_components"] firstObject] objectForKey:@"long_name"];
+                NSDictionary *place =[places firstObject];
+                
+                currentLocationAnnotation.title=place[@"formatted_address"];
+                if ([place[@"address_components"] count]>0) {
+                    
+                    currentLocationAnnotation.subtitle=[[place[@"address_components"] firstObject] objectForKey:@"long_name"];
+                    
+                }
+                
+                //                [self.mapView addAnnotation:currentLocationAnnotation];
+                
                 
             }
-            
-            //                [self.mapView addAnnotation:currentLocationAnnotation];
-            
-            
         }
     }];
 }
@@ -439,7 +559,7 @@
     if (isDragging) {
         
         CLLocationCoordinate2D center = self.mapView.region.center;
-        center.latitude += self.mapView.region.span.latitudeDelta * 0.05;
+        //        center.latitude += self.mapView.region.span.latitudeDelta * 0.05;
         //        [self.mapView setCenterCoordinate:center animated:YES];
         
         //         currentLocationAnnotation.coordinate = self.mapView.region.center;
@@ -482,45 +602,104 @@
         
         //   strUrl =  [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%f,%f&radius=5000&sensor=true&key=%@",userCurrentLocation.coordinate.latitude,userCurrentLocation.coordinate.longitude,kGoogleServerKey]
         
-        [self selectedLocationApi:userCurrentLocation.coordinate withUrl:strUrl completionHandler:^(NSArray *places) {
+        [[NetworkLayer getInstance] getNearestLocationWebservice:userCurrentLocation andUrl:strUrl Completion:^(BOOL success, NSArray *places, NSError *error) {
             
-            if (places.count > 0) {
+            if (success) {
                 
-                NSDictionary *place =[places firstObject];
-                
-                NSString *address=@"";
-                
-                if (place[@"formatted_address"]) {
+                if (places.count > 0) {
                     
-                    address= place[@"formatted_address"];
+                    NSDictionary *place =[places firstObject];
+                    
+                    NSString *address=@"";
+                    
+                    if (place[@"formatted_address"]) {
+                        
+                        address= place[@"formatted_address"];
+                        
+                    }
+                    if ([place[@"address_components"] count]>0) {
+                        
+                        currentLocationAnnotation.subtitle=[[place[@"address_components"] firstObject] objectForKey:@"long_name"];
+                        
+                    }
+                    currentLocationAnnotation.title =address;
+                    
+                    NearLocation *objLocation =[[NearLocation alloc] initWithImageName:@"" title:currentLocationAnnotation.title withLatitude:userCurrentLocation.coordinate.latitude withLongtitude:userCurrentLocation.coordinate.longitude withLocationId:0 withAddress:currentLocationAnnotation.subtitle];
+                    
+                    [self selectedLocation:objLocation];
                     
                 }
-                if ([place[@"address_components"] count]>0) {
-                    
-                    currentLocationAnnotation.subtitle=[[place[@"address_components"] firstObject] objectForKey:@"long_name"];
-                    
-                }
-                currentLocationAnnotation.title =address;
-                
-                NearLocation *objLocation =[[NearLocation alloc] initWithImageName:@"" title:currentLocationAnnotation.title withLatitude:userCurrentLocation.coordinate.latitude withLongtitude:userCurrentLocation.coordinate.longitude withLocationId:0 withAddress:currentLocationAnnotation.subtitle];
-                
-                [self selectedLocation:objLocation];
-                
-            }
-            else
-            {
-                locationSelected = NO;
             }
         }];
     }
     else
     {
         locationSelected = NO;
-
+        
         [CommonFunction displayTheToastWithMsg:@"No internet connection !" duration:1.5];
     }
+    
+    
+}
 
-
+-(void)fetchCurrentLocation
+{
+    if([CommonFunction isActiveInternet])
+    {
+        NSString *strUrl =[NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/geocode/json?latlng=%f,%f&sensor=true&key=%@",userCurrentLocation.coordinate.latitude,userCurrentLocation.coordinate.longitude,kGoogleServerKey];
+        
+        //   strUrl =  [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%f,%f&radius=5000&sensor=true&key=%@",userCurrentLocation.coordinate.latitude,userCurrentLocation.coordinate.longitude,kGoogleServerKey]
+        
+        
+        [[NetworkLayer getInstance] getNearestLocationWebservice:userCurrentLocation andUrl:strUrl Completion:^(BOOL success, NSArray *places, NSError *error) {
+            
+            if (success) {
+                
+                if (places.count > 0) {
+                    
+                    NSDictionary *place =[places firstObject];
+                    
+                    NSString *address=@"";
+                    
+                    if (place[@"formatted_address"]) {
+                        
+                        address= place[@"formatted_address"];
+                        
+                    }
+                    if (address.length > 0) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            
+                            nearByDetails[1] = @{@"image" : [UIImage imageNamed:@"mylocation_blue.png"] , @"text" : @"My Location", @"subtitle" : address};
+                            
+                            NSIndexPath *indexPath =[NSIndexPath indexPathForRow:1 inSection:0];
+                            
+                            [self.tblLocationNearby reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                            
+                            
+                            
+                            nearByLocationDetails[0] = @{@"image" : [UIImage imageNamed:@"mylocation_blue.png"] , @"text" : @"My Location", @"subtitle" : address};
+                            NSIndexPath *indexPath1 =[NSIndexPath indexPathForRow:0 inSection:0];
+                            
+                            [self.nearLocationTableView reloadRowsAtIndexPaths:@[indexPath1] withRowAnimation:UITableViewRowAnimationNone];
+                            
+                            
+                        });
+                        
+                    }
+                    
+                    
+                    
+                }
+            }
+            
+        }];
+    }
+    else
+    {
+        [CommonFunction displayTheToastWithMsg:@"No internet connection !" duration:1.5];
+    }
+    
+    
 }
 #pragma mark - Class Functions
 
@@ -530,8 +709,11 @@
         
         NSLog(@"Location Services Enabled");
         
+        [CommonFunction removeLoaderFromViewController:self];
+        [CommonFunction showLoaderInViewController:self];
+        
         if ([CLLocationManager authorizationStatus]==kCLAuthorizationStatusDenied){
-
+            
             UIAlertController *alertController=   [UIAlertController
                                                    alertControllerWithTitle:@"App Permission Denied"
                                                    message:@"To re-enable, please go to Settings \n and turn on Location Service for \nthis app."
@@ -548,15 +730,16 @@
             [alertController addAction:yesButton];
             
             [self presentViewController:alertController animated:YES completion:nil];
-
+            
         }
         else{
-            
+            [CommonFunction removeLoaderFromViewController:self];
+            [CommonFunction showLoaderInViewController:self];
             
             if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
                 [self.locationManager requestWhenInUseAuthorization];
             }
-
+            
             [self.locationManager startUpdatingLocation];
             userCurrentLocation = [[CLLocation alloc] init];
         }
@@ -567,19 +750,19 @@
 //- (void) locationManager:(CLLocationManager *) manager didUpdateToLocation:(CLLocation *) newLocation fromLocation:(CLLocation *) oldLocation
 //{
 //    userCurrentLocation = newLocation;
-//    
+//
 ////    self.mapView.showsUserLocation = YES;
 //
-//    
+//
 //    if (!isFindNearestLocation) {
-//     
+//
 //        isFindNearestLocation = YES;
-//        
+//
 //        [self nearestWS];
 //
 //    }
-//    
-//    
+//
+//
 //}
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
@@ -587,29 +770,34 @@
     
     userCurrentLocation = [locations lastObject];
     
-    //    self.mapView.showsUserLocation = YES;
+    //        self.mapView.showsUserLocation = YES;
     
     if (!isFindNearestLocation) {
+        [CommonFunction removeLoaderFromViewController:self];
         
         isFindNearestLocation = YES;
         
-//        currentLocationAnnotation.coordinate = self.mapView.region.center;
+        //        currentLocationAnnotation.coordinate = self.mapView.region.center;
         
-        currentLocationAnnotation.coordinate =CLLocationCoordinate2DMake(userCurrentLocation.coordinate.latitude, userCurrentLocation.coordinate.latitude);// self.mapView.region.center;
-
+        currentLocationAnnotation.coordinate =CLLocationCoordinate2DMake(userCurrentLocation.coordinate.latitude, userCurrentLocation.coordinate.longitude);// self.mapView.region.center;
+        
+        [self.mapView setCenterCoordinate:userCurrentLocation.coordinate animated:YES];
         
         [self nearestWS];
         
+        [self fetchCurrentLocation];
     }
 }
 - (void)locationManager:(CLLocationManager *)manager
        didFailWithError:(NSError *)error
 {
+    [CommonFunction removeLoaderFromViewController:self];
     
-//    if (DEBUG) {
-//        NSLog(@"Error = %@",[error localizedFailureReason]);
-//
-//    }
+    
+    //    if (DEBUG) {
+    //        NSLog(@"Error = %@",[error localizedFailureReason]);
+    //
+    //    }
 }
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status;
@@ -625,9 +813,33 @@
     cell.lblTitle.text = objNear.title;
     
     cell.lblSubtitle.text= objNear.address;
-//    cell.lblTitle.textColor = kThemeTextColor;
-//    cell.lblSubtitle.textColor = kThemeTextColor;
-
+    cell.lblTitle.textColor = kThemeTextColor;
+    cell.lblSubtitle.textColor = kThemeTextColor;
+    
+    /*     NSURL *url = [NSURL URLWithString:objNear.imageName];
+     
+     NSURLSessionTask *task = [[NSURLSession sharedSession] dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+     if (data) {
+     UIImage *image = [UIImage imageWithData:data];
+     if (image) {
+     dispatch_async(dispatch_get_main_queue(), ^{
+     UITableViewCell *updateCell = (id)[_tblLocationNearby cellForRowAtIndexPath:indexPath];
+     
+     if (updateCell)
+     cell.imageView.image = image;
+     
+     
+     });
+     }
+     }
+     }];
+     [task resume];
+     
+     */
+    
+    //  }
+    
+    
 }
 
 - (void)configureRecentSearchCell:(UITableViewCell *)cell withIndexPath:(NSIndexPath *)indexPath
@@ -640,8 +852,8 @@
     image.image = [UIImage imageNamed:@"LocationSearchGray"];
     nameLbl.text=[recentSearches objectAtIndex:indexPath.row];
     
-//    nameLbl.textColor = kThemeTextColor;
-//    cell.textLabel.text =[recentSearches objectAtIndex:indexPath.row];
+    nameLbl.textColor = kThemeTextColor;
+    //    cell.textLabel.text =[recentSearches objectAtIndex:indexPath.row];
 }
 
 #pragma mark - Actions
@@ -661,164 +873,89 @@
     
     searchBarNav.text=@"";
     
-//    nearByDetails[0] = @{@"image" : [UIImage imageNamed:@"mylocation_blue.png"] , @"text" : @"Send Your Location", @"subtitle" : @"Accurate to 10m"};
-//    
-//    if (heightMapviewConstraint.constant == kMapViewHeightConstraint) {
-//        
-//        nearByDetails[1] = @{@"image" : [UIImage imageNamed:@"expand_blue.png"] , @"text" : @"Hide places", @"subtitle" : @""};
-//        
-//    }
-//    else{
-//        
-//        nearByDetails[1] = @{@"image" : [UIImage imageNamed:@"expand_blue.png"] , @"text" : @"Show places", @"subtitle" : @""};
-//        
-//    }
+    //    nearByDetails[0] = @{@"image" : [UIImage imageNamed:@"mylocation_blue.png"] , @"text" : @"Send Your Location", @"subtitle" : @"Accurate to 10m"};
+    //
+    //    if (heightMapviewConstraint.constant == kMapViewHeightConstraint) {
+    //
+    //        nearByDetails[1] = @{@"image" : [UIImage imageNamed:@"expand_blue.png"] , @"text" : @"Hide places", @"subtitle" : @""};
+    //
+    //    }
+    //    else{
+    //
+    //        nearByDetails[1] = @{@"image" : [UIImage imageNamed:@"expand_blue.png"] , @"text" : @"Show places", @"subtitle" : @""};
+    //
+    //    }
     
-//    if(nearByDetails.count > 2)
-//    {
-//        [nearByDetails removeObjectsInRange:NSMakeRange(2, nearByDetails.count-2)];
-//        
-//    }
+    //    if(nearByDetails.count > 2)
+    //    {
+    //        [nearByDetails removeObjectsInRange:NSMakeRange(2, nearByDetails.count-2)];
+    //
+    //    }
     
     [self nearestWS];
     
 }
 
+#pragma mark- CUSTOM ANNOTATION
 
-#pragma mark- TableView Delegates
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+/*
+ -(MKAnnotationView *) mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
+ MKPinAnnotationView *MyPin=[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"current"];
+ //MyPin.pinColor = MKPinAnnotationColorPurple;
+ 
+ UIButton *advertButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+ [advertButton addTarget:self action:@selector(button:) forControlEvents:UIControlEventTouchUpInside];
+ 
+ //    MyPin.rightCalloutAccessoryView = advertButton;
+ //     MyPin.draggable = YES;
+ 
+ MyPin.animatesDrop=TRUE;
+ MyPin.canShowCallout = YES;
+ 
+ 
+ MyPin.highlighted = NO;
+ MyPin.image = [UIImage imageNamed:@"marker.png"];
+ 
+ return MyPin;
+ }
+ */
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    if (tableView == _tblLocationNearby) {
-        return nearByDetails.count;
-    }
-    else
-    {
-        return recentSearches.count;
-    }
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (tableView == _tblLocationNearby) {
+    if ([annotation isKindOfClass:[MKUserLocation class]])
+        return nil;
+    MKAnnotationView *annotationView = [mapView dequeueReusableAnnotationViewWithIdentifier:@"String"];
+    if(!annotationView) {
         
-        NearByTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"nearByListcell" forIndexPath:indexPath];
-        
-        if (indexPath.row < nearByDetails.count) {
+        annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"String"];
+        if ([annotation.title isEqualToString:@"Send this location"]) {
+            annotationView.image = [UIImage imageNamed:@"locMarker.png"];
             
-            [self configureNearbyCell:cell withIndexPath:indexPath];
-            
         }
-        //            cell.backgroundColor = kThemeBGColor;
-        return cell;
+        else{
+            annotationView.image = [UIImage imageNamed:@"marker"];
+        }
+        
+        //        UIButton *directionButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        //        UIImage *directionIcon = [UIImage imageNamed:@"marker"];
+        //        directionButton.frame =
+        //        CGRectMake(0, 0, directionIcon.size.width, directionIcon.size.height);
+        //
+        //        [directionButton setImage:directionIcon forState:UIControlStateNormal];
+        
+        //        annotationView.rightCalloutAccessoryView = directionButton;
+        annotationView.enabled = YES;
+        annotationView.canShowCallout = YES;
     }
-    else
-    {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
-        
-//        cell.backgroundColor = kThemeBGColor;
-        [self configureRecentSearchCell:cell withIndexPath:indexPath];
-        
-        return cell;
-        
+    else {
+        //update annotation to current if re-using a view
+        annotationView.annotation = annotation;
     }
     
+    return annotationView;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+-(void)addAnnotationsInMapview
 {
-    if (tableView == _tblLocationNearby) {
-        NearLocation *objNear= [nearByDetails objectAtIndex:indexPath.row];
-        
-        NSLog(@"name =%@ and cordinate=%f",objNear.title,objNear.latitude);
-        
-        [self.delegate locationSelectionPressed:objNear];
-        
-        [self dismissViewControllerAnimated:YES completion:nil];
-
-//        [self selectedLocation:objNear];
-    }
-    else
-    {
-        searchBarNav.text= [recentSearches objectAtIndex:indexPath.row];
-        
-        [self searchBarSearchButtonClicked:searchBarNav];
-    }
-    
-}
-
-- (void)HidePlaces {
-    
-    
-    [UIView animateWithDuration:0.35f animations:^{
-        
-        if (safeAreaInsetBottom > 0) {
-            heightMapviewConstraint.constant = [UIScreen mainScreen].bounds.size.height-195;
-
-        }
-        else
-        {
-            heightMapviewConstraint.constant = [UIScreen mainScreen].bounds.size.height-175;
-
-        }
-        
-        self.tblLocationNearby.scrollEnabled = NO;
-        
-        nearByDetails[1] = @{@"image" : [UIImage imageNamed:@"collapse_blue.png"] , @"text" : @"Show places", @"subtitle" : @""};
-        
-        [self.view layoutIfNeeded];
-        
-        //        [self.tblLocationNearby reloadData];
-        
-        NSIndexPath *indexPath =[NSIndexPath indexPathForRow:1 inSection:0];
-        
-        [self.tblLocationNearby reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-        
-        [self.mapView setZoomEnabled:YES];
-        
-        [self.mapView setCenterCoordinate:userCurrentLocation.coordinate zoomLevel:ZOOM_LEVEL animated:NO];
-        
-        NSArray *annotations = [self createAnnotations];
-        
-        [self.mapView addAnnotations:annotations];
-        
-    }];
-    
-    currentLocationAnnotation.title = @"Send this location";
-    currentLocationAnnotation.coordinate = userCurrentLocation.coordinate;
-    [self.mapView addAnnotation:currentLocationAnnotation];
-    
-    
-}
-- (void)showPlaces {
-    
-    [UIView animateWithDuration:0.35f animations:^{
-        
-        heightMapviewConstraint.constant = kMapViewHeightConstraint;
-        
-        self.tblLocationNearby.scrollEnabled = YES;
-        
-        nearByDetails[1] = @{@"image" : [UIImage imageNamed:@"expand_blue.png"] , @"text" : @"Hide places", @"subtitle" : @""};
-        
-        [self.view layoutIfNeeded];
-        
-        [self.tblLocationNearby reloadData];
-        
-        [self.mapView removeAnnotations:self.mapView.annotations];
-        
-        
-    }];
-    
-}
-
--(NSMutableArray*)createAnnotations
-{
-    
     NSMutableArray *annotations = [[NSMutableArray alloc] init];
     
     for (NearLocation *row in nearByDetails) {
@@ -831,36 +968,473 @@
             
             NSString *title = row.title;
             
-            //Create coordinates from the latitude and longitude values
+            MKCoordinateRegion Bridge = { {0.0, 0.0} , {0.0, 0.0} };
+            Bridge.center.latitude = latitude;
+            Bridge.center.longitude = longitude;
+            Bridge.span.longitudeDelta = 0.01f;
+            Bridge.span.latitudeDelta = 0.01f;
             
-            CLLocationCoordinate2D coord;
-            
-            coord.latitude = latitude;
-            
-            coord.longitude = longitude;
-            
-            MKPointAnnotation *point = [[MKPointAnnotation alloc] init];
-            
-            point.title = title;
-            point.coordinate = coord;
-            //            [self.mapView addAnnotation:point];
-            
-            [annotations addObject:point];
-            
+            MyAnnotation *ann = [[MyAnnotation alloc] init];
+            ann.title = title;
+            ann.subtitle = row.address;
+            ann.coordinate = Bridge.center;
+            //            ann.imageName = @"marker";
+            [self.mapView addAnnotation:ann];
+            [annotations addObject:ann];
         }
         
         
     }
-    
-    return annotations;
+}
+#pragma mark- TableView Delegates
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (tableView == _tblLocationNearby) {
+        return nearByDetails.count;
+    }
+    else if (tableView == self.nearLocationTableView)
+    {
+        return nearByLocationDetails.count;
+        
+    }
+    else
+    {
+        return recentSearches.count;
+    }
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(tableView == _tblLocationNearby){
+        if(indexPath.row  == 0)
+        {
+            return 25.0;
+        }
+    }
+    return 53.0;
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (tableView == _tblLocationNearby) {
+        if (indexPath.row == 0) {
+            
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"topCell" forIndexPath:indexPath];
+            
+            UIButton *btnAction = (UIButton*)[cell viewWithTag:30];
+            
+            [btnAction addTarget:self action:@selector(showOrHideTableView) forControlEvents:UIControlEventTouchUpInside];
+            UIButton *button = (UIButton*)[cell viewWithTag:10];
+            
+            CGRect rect = button.frame;
+            
+            rect.size.width = 34;
+            
+            button.frame = rect;
+            
+            button.layer.cornerRadius = button.frame.size.height/2.0;
+            button.layer.masksToBounds = YES;
+            
+            cell.backgroundColor = kThemeBGColor;
+            
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            cell.separatorInset = UIEdgeInsetsMake(0.f, cell.bounds.size.width, 0.f, 0.f);
+            
+            return cell;
+        }
+        if (indexPath.row == 1 || indexPath.row == 2) {
+            
+            NSDictionary *cellDetails = [nearByDetails objectAtIndex:indexPath.row];
+            
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
+            cell.backgroundColor = kThemeBGColor;
+            cell.imageView.image = cellDetails[@"image"];
+            
+            cell.textLabel.text = cellDetails[@"text"];
+            cell.detailTextLabel.text = cellDetails[@"subtitle"];
+            cell.textLabel.textColor = kThemeTextColor;
+            cell.detailTextLabel.textColor = UIColorFromRGB(0x878787);
+            
+            cell.imageView.hidden=NO;
+            
+            //            cell.imageView.layer.borderWidth = 0.5;
+            //            cell.imageView.layer.cornerRadius = 5;
+            
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            
+            return cell;
+        }
+        else{
+            
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
+            
+            if (indexPath.row < nearByDetails.count) {
+                
+                [self configureNearbyWithCustomCell:cell withIndexPath:indexPath];
+                
+            }
+            //            NearByTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"nearByListcell" forIndexPath:indexPath];
+            //
+            //            if (indexPath.row < nearByDetails.count) {
+            //
+            //                [self configureNearbyCell:cell withIndexPath:indexPath];
+            //
+            //            }
+            //            cell.backgroundColor = kThemeBGColor;
+            return cell;
+        }
+        
+        
+    }
+    else if(tableView == self.nearLocationTableView)
+    {
+        if (indexPath.row == 0 || indexPath.row == 1) {
+            
+            NSDictionary *cellDetails = [nearByLocationDetails objectAtIndex:indexPath.row];
+            
+            NearByTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"neartableViewCell" forIndexPath:indexPath];
+            //            UITableViewCell *cell = [[UITableViewCell alloc] init];
+            
+            cell.backgroundColor = kThemeBGColor;
+            cell.thumpImageView.image = cellDetails[@"image"];
+            
+            cell.lblTitle.text = cellDetails[@"text"];
+            cell.lblSubtitle.text = cellDetails[@"subtitle"];
+            cell.lblTitle.textColor = kThemeTextColor;
+            cell.lblSubtitle.textColor = UIColorFromRGB(0x878787);
+            
+            cell.imageView.hidden=NO;
+            
+            //            cell.imageView.layer.borderWidth = 0.5;
+            //            cell.imageView.layer.cornerRadius = 5;
+            
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            //              cell.backgroundColor = [UIColor redColor];
+            return cell;
+        }
+        else{
+            
+            NearByTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"neartableViewCell" forIndexPath:indexPath];
+            //            UITableViewCell *cell = [[UITableViewCell alloc] init];
+            
+            if (indexPath.row < nearByLocationDetails.count) {
+                
+                [self configureNearbyWithCustomCell1:cell withIndexPath:indexPath];
+                
+            }
+            //            NearByTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"nearByListcell" forIndexPath:indexPath];
+            //
+            //            if (indexPath.row < nearByDetails.count) {
+            //
+            //                [self configureNearbyCell:cell withIndexPath:indexPath];
+            //
+            //            }
+            
+            return cell;
+        }
+    }
+    else
+    {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
+        
+        cell.backgroundColor = kThemeBGColor;
+        [self configureRecentSearchCell:cell withIndexPath:indexPath];
+        
+        return cell;
+        
+    }
     
 }
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (tableView == _tblLocationNearby || tableView == self.nearLocationTableView) {
+        
+        if (indexPath.row == 1) {
+            if (locationSelected) {
+                return;
+            }
+            
+            if ([CLLocationManager locationServicesEnabled]){
+                
+                NSLog(@"Location Services Enabled");
+                
+                if ([CLLocationManager authorizationStatus]==kCLAuthorizationStatusDenied){
+                    
+                    UIAlertController *alertController=   [UIAlertController
+                                                           alertControllerWithTitle:@"App Permission Denied"
+                                                           message:@"To re-enable, please go to Settings \n and turn on Location Service for \nthis app."
+                                                           preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertAction* yesButton = [UIAlertAction
+                                                actionWithTitle:@"OK"
+                                                style:UIAlertActionStyleDefault
+                                                handler:^(UIAlertAction * action) {
+                                                    //Handle your yes please button action here
+                                                    
+                                                    
+                                                }];
+                    
+                    [alertController addAction:yesButton];
+                    
+                    [self presentViewController:alertController animated:YES completion:nil];
+                    
+                }
+                else
+                {
+                    locationSelected = YES;
+                    [self getAddressFromCordinate];
+                }
+            }
+            else
+            {
+                UIAlertController *alertController=   [UIAlertController
+                                                       alertControllerWithTitle:@"App Permission Denied"
+                                                       message:@"To re-enable, please go to Settings \n and turn on Location Service for \nthis app."
+                                                       preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction* yesButton = [UIAlertAction
+                                            actionWithTitle:@"OK"
+                                            style:UIAlertActionStyleDefault
+                                            handler:^(UIAlertAction * action) {
+                                                //Handle your yes please button action here
+                                                
+                                                
+                                            }];
+                
+                [alertController addAction:yesButton];
+                
+                [self presentViewController:alertController animated:YES completion:nil];
+            }
+            
+            
+            //            NearLocation *objLocation =[[NearLocation alloc] initWithImageName:@"" title:currentLocationAnnotation.title withLatitude:currentLocationAnnotation.coordinate.latitude withLongtitude:currentLocationAnnotation.coordinate.longitude withLocationId:0 withAddress:currentLocationAnnotation.subtitle];
+            //
+            //            [self selectedLocation:objLocation];
+            
+            
+        }
+        else if (indexPath.row == 2 || indexPath.row == 0) {
+            
+            if (heightMapviewConstraint.constant == kMapViewHeightConstraint) {
+                
+                [self HidePlaces];
+                
+            }
+            else{
+                
+                [self showPlaces];
+            }
+            
+        }
+        else
+        {
+            NearLocation *objNear= [nearByDetails objectAtIndex:indexPath.row];
+            
+            NSLog(@"name =%@ and cordinate=%f",objNear.title,objNear.latitude);
+            
+            [self selectedLocation:objNear];
+            
+            //            UIAlertController *alertController=   [UIAlertController
+            //                                                   alertControllerWithTitle:@"Location"
+            //                                                   message:[NSString stringWithFormat:@"name =%@ and cordinate=%f",objNear.title,objNear.latitude]
+            //                                                   preferredStyle:UIAlertControllerStyleAlert];
+            //            UIAlertAction* yesButton = [UIAlertAction
+            //                                        actionWithTitle:@"OK"
+            //                                        style:UIAlertActionStyleDefault
+            //                                        handler:^(UIAlertAction * action) {
+            //                                            //Handle your yes please button action here
+            //
+            //
+            //                                        }];
+            //
+            //            [alertController addAction:yesButton];
+            //
+            //            [self presentViewController:alertController animated:YES completion:nil];
+        }
+    }
+    else
+    {
+        searchBarNav.text= [recentSearches objectAtIndex:indexPath.row];
+        
+        [self searchBarSearchButtonClicked:searchBarNav];
+    }
+    
+}
+
+-(void)showOrHideTableView
+{
+    if (heightMapviewConstraint.constant == kMapViewHeightConstraint) {
+        
+        [self HidePlaces];
+        
+    }
+    else{
+        
+        [self showPlaces];
+    }
+}
+- (void)configureNearbyWithCustomCell:(UITableViewCell *)cell withIndexPath:(NSIndexPath *)indexPath
+{
+    NearLocation *objNear= [nearByDetails objectAtIndex:indexPath.row];
+    
+    cell.backgroundColor = kThemeBGColor;
+    cell.imageView.image = [UIImage imageNamed:@"placeThump.png"];//[UIImage imageNamed:@"placesicon.png"];//
+    
+    cell.textLabel.text = objNear.title;
+    cell.detailTextLabel.text = objNear.address;
+    cell.textLabel.textColor = kThemeTextColor;
+    cell.detailTextLabel.textColor = UIColorFromRGB(0x878787);
+    
+    cell.imageView.hidden=NO;
+    
+}
+- (void)configureNearbyWithCustomCell1:(NearByTableViewCell *)cell withIndexPath:(NSIndexPath *)indexPath
+{
+    NearLocation *objNear= [nearByLocationDetails objectAtIndex:indexPath.row];
+    
+    //    cell.backgroundColor = kThemeBGColor;
+    //    cell.imageView.image = [UIImage imageNamed:@"placeThump.png"];//[UIImage imageNamed:@"placesicon.png"];//
+    //
+    //    cell.textLabel.text = objNear.title;
+    //    cell.detailTextLabel.text = objNear.address;
+    //    cell.textLabel.textColor = kThemeTextColor;
+    //    cell.detailTextLabel.textColor = UIColorFromRGB(0x878787);
+    
+    cell.backgroundColor = kThemeBGColor;
+    cell.thumpImageView.image = [UIImage imageNamed:@"placeThump.png"];
+    
+    cell.lblTitle.text = objNear.title;
+    cell.lblSubtitle.text = objNear.address;
+    cell.lblTitle.textColor = kThemeTextColor;
+    cell.lblSubtitle.textColor = UIColorFromRGB(0x878787);
+    
+    cell.imageView.hidden=NO;
+    
+}
+- (void)HidePlaces {
+    
+    
+    [UIView animateWithDuration:0.35f animations:^{
+        
+        if (safeAreaInsetBottom > 0) {
+            heightMapviewConstraint.constant = [UIScreen mainScreen].bounds.size.height-248;
+            
+        }
+        else
+        {
+            heightMapviewConstraint.constant = [UIScreen mainScreen].bounds.size.height-214;
+            
+        }
+        
+        self.tblLocationNearby.scrollEnabled = NO;
+        
+        nearByDetails[2] = @{@"image" : [UIImage imageNamed:@"placesicon.png"] , @"text" : @"Nearby places", @"subtitle" : @"Pull up to see nearby places"};
+        nearByLocationDetails[1] = @{@"image" : [UIImage imageNamed:@"placesicon.png"] , @"text" : @"Nearby places", @"subtitle" : @"Pull up to see nearby places"};
+        
+        
+        
+        [self.view layoutIfNeeded];
+        
+        //        [self.tblLocationNearby reloadData];
+        
+        NSIndexPath *indexPath =[NSIndexPath indexPathForRow:2 inSection:0];
+        
+        [self.tblLocationNearby reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        
+        
+        NSIndexPath *indexPath1 =[NSIndexPath indexPathForRow:1 inSection:0];
+        
+        [self.nearLocationTableView reloadRowsAtIndexPaths:@[indexPath1] withRowAnimation:UITableViewRowAnimationNone];
+        
+        
+        [self.mapView setZoomEnabled:YES];
+        
+        [self.mapView setCenterCoordinate:userCurrentLocation.coordinate zoomLevel:ZOOM_LEVEL animated:NO];
+        
+        //        NSArray *annotations = [self createAnnotations];
+        //
+        //        [self.mapView addAnnotations:annotations];
+        
+    }];
+    
+    //    currentLocationAnnotation.title = @"Send this location";
+    //    currentLocationAnnotation.coordinate = userCurrentLocation.coordinate;
+    //    [self.mapView addAnnotation:currentLocationAnnotation];
+    
+    
+}
+- (void)showPlaces {
+    
+    [UIView animateWithDuration:0.35f animations:^{
+        
+        heightMapviewConstraint.constant = kMapViewHeightConstraint;
+        
+        self.tblLocationNearby.scrollEnabled = YES;
+        
+        nearByDetails[2] = @{@"image" : [UIImage imageNamed:@"placesicon.png"] , @"text" : @"Nearby Places", @"subtitle" : @"Accurate to 50m"};
+        nearByLocationDetails[1] = @{@"image" : [UIImage imageNamed:@"placesicon.png"] , @"text" : @"Nearby Places", @"subtitle" : @"Accurate to 50m"};
+        
+        [self.view layoutIfNeeded];
+        
+        [self.tblLocationNearby reloadData];
+        [self.nearLocationTableView reloadData];
+        
+        //        [self.mapView removeAnnotations:self.mapView.annotations];
+        
+    }];
+    
+}
+
+//-(NSMutableArray*)createAnnotations
+//{
+//
+//    NSMutableArray *annotations = [[NSMutableArray alloc] init];
+//
+//    for (NearLocation *row in nearByDetails) {
+//
+//        if ([row isKindOfClass:[NearLocation class]]) {
+//
+//            double latitude = row.latitude;
+//
+//            double longitude = row.longtitude;
+//
+//            NSString *title = row.title;
+//
+//            //Create coordinates from the latitude and longitude values
+//
+//            CLLocationCoordinate2D coord;
+//
+//            coord.latitude = latitude;
+//
+//            coord.longitude = longitude;
+//
+//            MKPointAnnotation *point = [[MKPointAnnotation alloc] init];
+//
+//            point.title = title;
+//            point.coordinate = coord;
+//            //            [self.mapView addAnnotation:point];
+//
+//            [annotations addObject:point];
+//
+//        }
+//
+//
+//    }
+//    return annotations;
+//
+//}
 
 - (void)selectedLocationApi:(CLLocationCoordinate2D)selectedCordinate withUrl:(NSString*)strUrl completionHandler:(void (^)(NSArray*))completionBlock{
     
     NSArray *places;
     
-//    NSString *strUrl =[NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/geocode/json?latlng=%f,%f&sensor=true",selectedCordinate.latitude,selectedCordinate.longitude];
+    //    NSString *strUrl =[NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/geocode/json?latlng=%f,%f&sensor=true",selectedCordinate.latitude,selectedCordinate.longitude];
     
     NSURL *url = [NSURL URLWithString:strUrl];
     NSError *error = nil;
@@ -899,8 +1473,6 @@
     
     return urlString;
 }
-#pragma mark - SearchBar Delegates
-
 #pragma mark - SearchBar Delegates
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
@@ -983,21 +1555,28 @@
         [userDefault synchronize];
     }
     
-//    [nearByDetails removeAllObjects];
+    //    [nearByDetails removeAllObjects];
     
-//    nearByDetails[0] = @{@"image" : [UIImage imageNamed:@"mylocation_blue.png"] , @"text" : @"Send Your Location", @"subtitle" : @"Accurate to 10m"};
-//    
-//    heightMapviewConstraint.constant =kMapViewHeightConstraint;
-//    
-//    nearByDetails[1] = @{@"image" : [UIImage imageNamed:@"expand_blue.png"] , @"text" : @"Hide places", @"subtitle" : @""};
-
+    //    nearByDetails[0] = @{@"image" : [UIImage imageNamed:@"mylocation_blue.png"] , @"text" : @"Send Your Location", @"subtitle" : @"Accurate to 10m"};
+    //
+    //    heightMapviewConstraint.constant =kMapViewHeightConstraint;
+    //
+    //    nearByDetails[1] = @{@"image" : [UIImage imageNamed:@"expand_blue.png"] , @"text" : @"Hide places", @"subtitle" : @""};
+    
+    
+    if(nearByDetails.count > 3)
+    {
+        [nearByDetails removeObjectsInRange:NSMakeRange(3, nearByDetails.count-3)];
+        
+    }
+    
     NSString *searchBarText = searchBar.text;
     MKLocalSearchRequest *request = [[MKLocalSearchRequest alloc] init];
     request.naturalLanguageQuery = searchBarText;
     request.region = _mapView.region;
     MKLocalSearch *search = [[MKLocalSearch alloc] initWithRequest:request];
     [search startWithCompletionHandler:^(MKLocalSearchResponse *response, NSError *error) {
-//        self.matchingItems = response.mapItems;
+        //        self.matchingItems = response.mapItems;
         
         NSArray *result = response.mapItems;
         
@@ -1005,13 +1584,13 @@
             
             CLLocationCoordinate2D cordinate =mapItem.placemark.coordinate;
             
-//            NSDictionary *addressDict = mapItem.placemark.addressDictionary;
+            //            NSDictionary *addressDict = mapItem.placemark.addressDictionary;
             
-//            NearLocation *objLocation =[[NearLocation alloc] initWithImageName:nil title:mapItem.name withLatitude:cordinate.latitude withLongtitude:cordinate.longitude withLocationId:0 withAddress:addressDict[@"Street"]];
+            //            NearLocation *objLocation =[[NearLocation alloc] initWithImageName:nil title:mapItem.name withLatitude:cordinate.latitude withLongtitude:cordinate.longitude withLocationId:0 withAddress:addressDict[@"Street"]];
             // do something with the icon URL
             
             NearLocation *objLocation =[[NearLocation alloc] initWithImageName:nil title:mapItem.name withLatitude:cordinate.latitude withLongtitude:cordinate.longitude withLocationId:0 withAddress:[self parseAddress:mapItem.placemark]];
-
+            
             
             [nearByDetails addObject:objLocation];
         }
@@ -1048,7 +1627,7 @@
                              ];
     return addressLine;
 }
-  
+
 
 -(void)selectedLocation:(NearLocation*)location
 {
@@ -1063,16 +1642,16 @@
                                 style:UIAlertActionStyleDefault
                                 handler:^(UIAlertAction * action) {
                                     //Handle your yes please button action here
-                                    if (location) {
-                                        
-                                        [self.delegate locationSelectionPressed:location];
-
-                                    }
+                                    
+                                    
                                 }];
     
     [alertController addAction:yesButton];
     
     //[[self presentViewController:alertController animated:YES completion:nil];
+    
+    [self sendLocationMessage:location];
+    
     
 }
 
@@ -1080,93 +1659,227 @@
 {
     return UIStatusBarStyleDefault;
 }
+- (void)sendLocationMessage:(NearLocation *)location
+{
+    
+    
+    NSError *writeError;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:location.dictionary options:NSJSONWritingPrettyPrinted error:&writeError];
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
+    NSMutableDictionary* replyParams = nil;
+    
+}
+#pragma mark- MapSettings
 
-/*
- -(void)nearestApiCall
- {
- [CommonFunction showLoaderInViewController:self];
- 
- dispatch_queue_t img_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
- dispatch_async(img_queue, ^{
- 
- //        NSString *strUrl =[NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/geocode/json?latlng=%f,%f&sensor=true_or_false",kFourSquare];
- 
- //        NSString *strUrl =[NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/geocode/json?latlng=%f,%f&sensor=true_or_false",userCurrentLocation.coordinate.latitude,userCurrentLocation.coordinate.longitude];
- 
- //        NSString *strUrl = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%f,%f&radius=500&type=restaurant&keyword=cruise&key=%@",userCurrentLocation.coordinate.latitude,userCurrentLocation.coordinate.longitude,kGoogleApiKey];
- 
- NSString *strUrl = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%f,%f&radius=5000&sensor=true&key=%@",userCurrentLocation.coordinate.latitude,userCurrentLocation.coordinate.longitude,kGoogleServerKey];
- 
- NSURL *url = [NSURL URLWithString:strUrl];
- NSError *error = nil;
- NSData *json = [NSData dataWithContentsOfURL:url options:0 error:&error];
- 
- if(!error) {
- NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:json
- options:kNilOptions
- error:&error];
- //            NSLog(@"JSON: %@", jsonDict);
- 
- if ([jsonDict[@"results"] isKindOfClass:[NSArray class]]) {
- 
- NSArray *places =jsonDict[@"results"];
- 
- 
- if(nearByDetails.count > 2)
- {
- [nearByDetails removeObjectsInRange:NSMakeRange(2, nearByDetails.count-2)];
- 
- }
- for (NSDictionary *place in places) {
- 
- 
- NSString *iconUrl=@"";// = [self getPhotosURL:place[@"photos"]];
- 
- //                    if ([place[@"photos"] count]>0) {
- //
- //                        iconUrl = [self getPhotosURL:[place[@"photos"] lastObject]];
- //                    }
- 
- NSDictionary *location = [place[@"geometry"] objectForKey:@"location"];
- 
- NSString *LocId= place[@"id"];
- 
- NSString *name;
- 
- if (place[@"name"]) {
- 
- name = place[@"name"];
- }
- else{
- name=place[@"vicinity"];
- }
- 
- NearLocation *objLocation =[[NearLocation alloc] initWithImageName:iconUrl title:name withLatitude:[location[@"lat"] doubleValue] withLongtitude:[location[@"lng"] doubleValue] withLocationId:LocId withAddress:place[@"vicinity"]];
- // do something with the icon URL
- 
- [nearByDetails addObject:objLocation];
- }
- 
- dispatch_async(dispatch_get_main_queue(), ^{
- //When json is loaded stop the indicator
- 
- [CommonFunction showLoaderInViewController:self];
- 
- [self.tblLocationNearby setHidden:NO];
- [self.tblRecentSearch setHidden:YES];
- 
- [self.tblLocationNearby reloadData];
- 
- });
- 
- }
- 
- }
- 
- });
- 
- }
- */
+- (IBAction)actionSelectMapType:(id)sender {
+    
+    UISegmentedControl *segment = (UISegmentedControl *)sender;
+    
+    switch (segment.selectedSegmentIndex) {
+        case 0:
+            [self.mapView setMapType:MKMapTypeStandard];
+            break;
+        case 1:
+            [self.mapView setMapType:MKMapTypeHybrid];
+            break;
+        case 2:
+            [self.mapView setMapType:MKMapTypeSatellite];
+            break;
+            
+        default:
+            break;
+    }
+    
+}
+- (IBAction)infoAction:(id)sender {
+    
+    [self.configurator fullfillContentViewWithView:self];
+    if ([self.configurator.contentView isHidden]) {
+        
+        self.configurator.contentView.hidden=NO;
+        [UIView animateWithDuration:0.35f animations:^{
+            
+            self.mapViewBottomConstraint.constant =130+safeAreaInsetBottom;
+            
+            [self.view layoutIfNeeded];
+        } completion:^(BOOL finished) {
+            
+            self.viewMapSettings.hidden= YES;
+            
+            if (mapHideFromInfoButton) {
+                
+                //                [self showFromInfoPlaces];
+                
+                mapHideFromInfoButton = NO;
+                
+            }
+        }];
+        
+    }
+    else{
+        
+        if (heightMapviewConstraint.constant == kMapViewHeightConstraint) {
+            
+            mapHideFromInfoButton =YES;
+            
+            //            [self hideFromInfo];
+        }
+        
+        self.configurator.contentView.hidden=YES;
+        
+        self.viewMapSettings.hidden= NO;
+        
+        [UIView animateWithDuration:0.35f animations:^{
+            
+            constantBottom = safeAreaInsetBottom;
+            
+            self.mapViewBottomConstraint.constant = constantBottom;
+            
+            [self.view layoutIfNeeded];
+            
+        }];
+    }
+    
+}
+- (IBAction)infoAction1:(id)sender {
+    
+    if (self.mapViewBottomConstraint.constant == constantBottom) {
+        
+        _tblLocationNearby.hidden= NO;
+        
+        [UIView animateWithDuration:0.35f animations:^{
+            
+            self.mapViewBottomConstraint.constant =130+safeAreaInsetBottom;
+            
+            [self.view layoutIfNeeded];
+        } completion:^(BOOL finished) {
+            
+            self.viewMapSettings.hidden= YES;
+            
+            if (mapHideFromInfoButton) {
+                
+                [self showFromInfoPlaces];
+                
+                mapHideFromInfoButton = NO;
+                
+            }
+        }];
+        
+    }
+    else{
+        
+        if (heightMapviewConstraint.constant == kMapViewHeightConstraint) {
+            
+            mapHideFromInfoButton =YES;
+            
+            [self hideFromInfo];
+        }
+        
+        _tblLocationNearby.hidden= YES;
+        
+        self.viewMapSettings.hidden= NO;
+        
+        [UIView animateWithDuration:0.35f animations:^{
+            
+            constantBottom = safeAreaInsetBottom;
+            
+            self.mapViewBottomConstraint.constant = constantBottom;
+            
+            [self.view layoutIfNeeded];
+            
+        }];
+    }
+    
+}
+- (IBAction)directionAction:(id)sender {
+    
+    CLLocation *location = userCurrentLocation;
+    if (location) {
+        
+        [self.mapView setCenterCoordinate:userCurrentLocation.coordinate animated:YES];
+        
+    }
+    
+}
+
+-(void)hideFromInfo
+{
+    
+    [UIView animateWithDuration:0.35f animations:^{
+        
+        if (safeAreaInsetBottom > 0) {
+            heightMapviewConstraint.constant = [UIScreen mainScreen].bounds.size.height-223;
+            
+        }
+        else
+        {
+            heightMapviewConstraint.constant = [UIScreen mainScreen].bounds.size.height-175;
+            
+        }
+        
+        self.tblLocationNearby.scrollEnabled = NO;
+        
+        [self.view layoutIfNeeded];
+        
+        [self.mapView setCenterCoordinate:userCurrentLocation.coordinate zoomLevel:ZOOM_LEVEL animated:NO];
+        
+        
+    }];
+}
+- (void)showFromInfoPlaces {
+    
+    [UIView animateWithDuration:0.35f animations:^{
+        
+        heightMapviewConstraint.constant = kMapViewHeightConstraint;
+        
+        self.tblLocationNearby.scrollEnabled = YES;
+        
+        [self.view layoutIfNeeded];
+        
+    }];
+    
+}
+#pragma mark- AGPULL VIEW DELEGATE
+//For correct working of layout in early versions of iOS 10
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [self.configurator layoutPullView];
+}
+
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [self.configurator handleTouchesBegan:touches];
+}
+
+- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [self.configurator handleTouchesMoved:touches];
+}
+
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [self.configurator handleTouchesEnded:touches];
+}
+
+- (void)didDragPullView:(AGPullView *)pullView withOpeningPercent:(float)openingPercent {
+    NSLog(@"%f", openingPercent);
+}
+
+- (void)didShowPullView:(AGPullView *)pullView {
+    NSLog(@"shown");
+}
+
+- (void)didHidePullView:(AGPullView *)pullView {
+    NSLog(@"hidden");
+}
+
+- (void)didTouchToShowPullView:(AGPullView *)pullView {
+    NSLog(@"touched to show");
+}
+
+- (void)didTouchToHidePullView:(AGPullView *)pullView {
+    NSLog(@"touched to hide");
+}
+
 /*
  #pragma mark - Navigation
  
@@ -1176,5 +1889,4 @@
  // Pass the selected object to the new view controller.
  }
  */
-
 @end
