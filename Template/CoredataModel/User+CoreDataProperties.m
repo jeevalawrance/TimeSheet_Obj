@@ -2,7 +2,7 @@
 //  User+CoreDataProperties.m
 //  ScrollingPOC
 //
-//  Created by Jeeva on 12/10/18.
+//  Created by Jeeva on 12/15/18.
 //  Copyright © 2018 CPD. All rights reserved.
 //
 //
@@ -16,10 +16,11 @@
 }
 
 @dynamic userEmail;
+@dynamic userID;
 @dynamic userIsVerified;
 @dynamic userName;
 @dynamic userSurname;
 @dynamic userType;
-@dynamic userID;
+@dynamic project;
 
 @end

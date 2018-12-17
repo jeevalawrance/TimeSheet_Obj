@@ -9,10 +9,6 @@
 /* Begin PBXBuildFile section */
 		130691DF21BEA5F300C97298 /* TimeSheet.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 130691DD21BEA5F300C97298 /* TimeSheet.xcdatamodeld */; };
 		1306920E21BEBCD100C97298 /* KPDropMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 1306920D21BEBCD100C97298 /* KPDropMenu.m */; };
-		1306921B21BEF42C00C97298 /* PropertList+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 1306921121BEF42B00C97298 /* PropertList+CoreDataClass.m */; };
-		1306921C21BEF42C00C97298 /* PropertList+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 1306921221BEF42B00C97298 /* PropertList+CoreDataProperties.m */; };
-		1306921D21BEF42C00C97298 /* User+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 1306921521BEF42C00C97298 /* User+CoreDataClass.m */; };
-		1306921E21BEF42C00C97298 /* User+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 1306921621BEF42C00C97298 /* User+CoreDataProperties.m */; };
 		13302DCD21C180E300CF8B43 /* AGListViewAnimationButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 13302DC521C180E300CF8B43 /* AGListViewAnimationButton.m */; };
 		13302DCE21C180E300CF8B43 /* AGPullMarginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 13302DC721C180E300CF8B43 /* AGPullMarginView.m */; };
 		13302DCF21C180E300CF8B43 /* AGPullView.m in Sources */ = {isa = PBXBuildFile; fileRef = 13302DC921C180E300CF8B43 /* AGPullView.m */; };
@@ -28,13 +24,17 @@
 		13302DFA21C18A2000CF8B43 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 13302DEE21C18A2000CF8B43 /* AFHTTPRequestOperation.m */; };
 		13302DFB21C18A2000CF8B43 /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 13302DF021C18A2000CF8B43 /* AFHTTPRequestOperationManager.m */; };
 		13302DFC21C18A2000CF8B43 /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 13302DF321C18A2000CF8B43 /* AFURLConnectionOperation.m */; };
+		1348D0A421C5258E00BD3B59 /* PropertList+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 1348D09A21C5258D00BD3B59 /* PropertList+CoreDataClass.m */; };
+		1348D0A521C5258E00BD3B59 /* PropertList+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 1348D09B21C5258D00BD3B59 /* PropertList+CoreDataProperties.m */; };
+		1348D0A621C5258E00BD3B59 /* User+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 1348D09E21C5258D00BD3B59 /* User+CoreDataClass.m */; };
+		1348D0A721C5258E00BD3B59 /* User+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 1348D09F21C5258D00BD3B59 /* User+CoreDataProperties.m */; };
+		1348D0A821C5258E00BD3B59 /* TaskList+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 1348D0A221C5258E00BD3B59 /* TaskList+CoreDataClass.m */; };
+		1348D0A921C5258E00BD3B59 /* TaskList+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 1348D0A321C5258E00BD3B59 /* TaskList+CoreDataProperties.m */; };
 		1377C02A21BFFD35002D6AFC /* Dashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1377C02921BFFD35002D6AFC /* Dashboard.storyboard */; };
 		1377C02D21BFFD77002D6AFC /* launchImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1377C02B21BFFD77002D6AFC /* launchImage@2x.png */; };
 		1377C02E21BFFD77002D6AFC /* launchImage@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1377C02C21BFFD77002D6AFC /* launchImage@3x.png */; };
 		1377C03321BFFECB002D6AFC /* TS_DashboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1377C03221BFFECB002D6AFC /* TS_DashboardViewController.m */; };
 		1377C03621C00270002D6AFC /* TS_DashboardCellCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1377C03521C00270002D6AFC /* TS_DashboardCellCollectionViewCell.m */; };
-		1377C03B21C01436002D6AFC /* TaskList+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 1377C03921C01436002D6AFC /* TaskList+CoreDataClass.m */; };
-		1377C03C21C01436002D6AFC /* TaskList+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 1377C03A21C01436002D6AFC /* TaskList+CoreDataProperties.m */; };
 		1377C03E21C01537002D6AFC /* TaskInput.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1377C03D21C01537002D6AFC /* TaskInput.storyboard */; };
 		1377C04221C01590002D6AFC /* TS_ProjectListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1377C04121C01590002D6AFC /* TS_ProjectListViewController.m */; };
 		1377C04521C03022002D6AFC /* TS_ProjectCreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1377C04421C03022002D6AFC /* TS_ProjectCreationViewController.m */; };
@@ -171,14 +171,6 @@
 		130691E021BEA85700C97298 /* ScrollingPOC-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ScrollingPOC-Bridging-Header.h"; sourceTree = "<group>"; };
 		1306920C21BEBCD100C97298 /* KPDropMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KPDropMenu.h; sourceTree = "<group>"; };
 		1306920D21BEBCD100C97298 /* KPDropMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KPDropMenu.m; sourceTree = "<group>"; };
-		1306920F21BEF42B00C97298 /* PropertList+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "PropertList+CoreDataProperties.h"; path = "CoredataModel/PropertList+CoreDataProperties.h"; sourceTree = "<group>"; };
-		1306921021BEF42B00C97298 /* PropertList+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "PropertList+CoreDataClass.h"; path = "CoredataModel/PropertList+CoreDataClass.h"; sourceTree = "<group>"; };
-		1306921121BEF42B00C97298 /* PropertList+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "PropertList+CoreDataClass.m"; path = "CoredataModel/PropertList+CoreDataClass.m"; sourceTree = "<group>"; };
-		1306921221BEF42B00C97298 /* PropertList+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "PropertList+CoreDataProperties.m"; path = "CoredataModel/PropertList+CoreDataProperties.m"; sourceTree = "<group>"; };
-		1306921321BEF42C00C97298 /* User+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "User+CoreDataProperties.h"; path = "CoredataModel/User+CoreDataProperties.h"; sourceTree = "<group>"; };
-		1306921421BEF42C00C97298 /* User+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "User+CoreDataClass.h"; path = "CoredataModel/User+CoreDataClass.h"; sourceTree = "<group>"; };
-		1306921521BEF42C00C97298 /* User+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "User+CoreDataClass.m"; path = "CoredataModel/User+CoreDataClass.m"; sourceTree = "<group>"; };
-		1306921621BEF42C00C97298 /* User+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "User+CoreDataProperties.m"; path = "CoredataModel/User+CoreDataProperties.m"; sourceTree = "<group>"; };
 		13302DC321C180E300CF8B43 /* AGConfiguratorDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGConfiguratorDelegate.h; sourceTree = "<group>"; };
 		13302DC421C180E300CF8B43 /* AGListViewAnimationButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGListViewAnimationButton.h; sourceTree = "<group>"; };
 		13302DC521C180E300CF8B43 /* AGListViewAnimationButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGListViewAnimationButton.m; sourceTree = "<group>"; };
@@ -211,6 +203,18 @@
 		13302DF121C18A2000CF8B43 /* AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworking.h; sourceTree = "<group>"; };
 		13302DF221C18A2000CF8B43 /* AFURLConnectionOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLConnectionOperation.h; sourceTree = "<group>"; };
 		13302DF321C18A2000CF8B43 /* AFURLConnectionOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLConnectionOperation.m; sourceTree = "<group>"; };
+		1348D09821C5258D00BD3B59 /* PropertList+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "PropertList+CoreDataProperties.h"; path = "CoredataModel/PropertList+CoreDataProperties.h"; sourceTree = "<group>"; };
+		1348D09921C5258D00BD3B59 /* PropertList+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "PropertList+CoreDataClass.h"; path = "CoredataModel/PropertList+CoreDataClass.h"; sourceTree = "<group>"; };
+		1348D09A21C5258D00BD3B59 /* PropertList+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "PropertList+CoreDataClass.m"; path = "CoredataModel/PropertList+CoreDataClass.m"; sourceTree = "<group>"; };
+		1348D09B21C5258D00BD3B59 /* PropertList+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "PropertList+CoreDataProperties.m"; path = "CoredataModel/PropertList+CoreDataProperties.m"; sourceTree = "<group>"; };
+		1348D09C21C5258D00BD3B59 /* User+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "User+CoreDataProperties.h"; path = "CoredataModel/User+CoreDataProperties.h"; sourceTree = "<group>"; };
+		1348D09D21C5258D00BD3B59 /* User+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "User+CoreDataClass.h"; path = "CoredataModel/User+CoreDataClass.h"; sourceTree = "<group>"; };
+		1348D09E21C5258D00BD3B59 /* User+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "User+CoreDataClass.m"; path = "CoredataModel/User+CoreDataClass.m"; sourceTree = "<group>"; };
+		1348D09F21C5258D00BD3B59 /* User+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "User+CoreDataProperties.m"; path = "CoredataModel/User+CoreDataProperties.m"; sourceTree = "<group>"; };
+		1348D0A021C5258D00BD3B59 /* TaskList+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "TaskList+CoreDataProperties.h"; path = "CoredataModel/TaskList+CoreDataProperties.h"; sourceTree = "<group>"; };
+		1348D0A121C5258E00BD3B59 /* TaskList+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "TaskList+CoreDataClass.h"; path = "CoredataModel/TaskList+CoreDataClass.h"; sourceTree = "<group>"; };
+		1348D0A221C5258E00BD3B59 /* TaskList+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "TaskList+CoreDataClass.m"; path = "CoredataModel/TaskList+CoreDataClass.m"; sourceTree = "<group>"; };
+		1348D0A321C5258E00BD3B59 /* TaskList+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "TaskList+CoreDataProperties.m"; path = "CoredataModel/TaskList+CoreDataProperties.m"; sourceTree = "<group>"; };
 		1377C02921BFFD35002D6AFC /* Dashboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Dashboard.storyboard; sourceTree = "<group>"; };
 		1377C02B21BFFD77002D6AFC /* launchImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "launchImage@2x.png"; sourceTree = "<group>"; };
 		1377C02C21BFFD77002D6AFC /* launchImage@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "launchImage@3x.png"; sourceTree = "<group>"; };
@@ -218,10 +222,6 @@
 		1377C03221BFFECB002D6AFC /* TS_DashboardViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TS_DashboardViewController.m; sourceTree = "<group>"; };
 		1377C03421C00270002D6AFC /* TS_DashboardCellCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TS_DashboardCellCollectionViewCell.h; sourceTree = "<group>"; };
 		1377C03521C00270002D6AFC /* TS_DashboardCellCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TS_DashboardCellCollectionViewCell.m; sourceTree = "<group>"; };
-		1377C03721C01436002D6AFC /* TaskList+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "TaskList+CoreDataProperties.h"; path = "CoredataModel/TaskList+CoreDataProperties.h"; sourceTree = "<group>"; };
-		1377C03821C01436002D6AFC /* TaskList+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "TaskList+CoreDataClass.h"; path = "CoredataModel/TaskList+CoreDataClass.h"; sourceTree = "<group>"; };
-		1377C03921C01436002D6AFC /* TaskList+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "TaskList+CoreDataClass.m"; path = "CoredataModel/TaskList+CoreDataClass.m"; sourceTree = "<group>"; };
-		1377C03A21C01436002D6AFC /* TaskList+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "TaskList+CoreDataProperties.m"; path = "CoredataModel/TaskList+CoreDataProperties.m"; sourceTree = "<group>"; };
 		1377C03D21C01537002D6AFC /* TaskInput.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TaskInput.storyboard; sourceTree = "<group>"; };
 		1377C04021C01590002D6AFC /* TS_ProjectListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TS_ProjectListViewController.h; sourceTree = "<group>"; };
 		1377C04121C01590002D6AFC /* TS_ProjectListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TS_ProjectListViewController.m; sourceTree = "<group>"; };
@@ -597,18 +597,18 @@
 		92DB62A41FA9C05300F7FF14 /* Template */ = {
 			isa = PBXGroup;
 			children = (
-				1377C03721C01436002D6AFC /* TaskList+CoreDataProperties.h */,
-				1377C03821C01436002D6AFC /* TaskList+CoreDataClass.h */,
-				1377C03921C01436002D6AFC /* TaskList+CoreDataClass.m */,
-				1377C03A21C01436002D6AFC /* TaskList+CoreDataProperties.m */,
-				1306920F21BEF42B00C97298 /* PropertList+CoreDataProperties.h */,
-				1306921021BEF42B00C97298 /* PropertList+CoreDataClass.h */,
-				1306921121BEF42B00C97298 /* PropertList+CoreDataClass.m */,
-				1306921221BEF42B00C97298 /* PropertList+CoreDataProperties.m */,
-				1306921321BEF42C00C97298 /* User+CoreDataProperties.h */,
-				1306921421BEF42C00C97298 /* User+CoreDataClass.h */,
-				1306921521BEF42C00C97298 /* User+CoreDataClass.m */,
-				1306921621BEF42C00C97298 /* User+CoreDataProperties.m */,
+				1348D09821C5258D00BD3B59 /* PropertList+CoreDataProperties.h */,
+				1348D09921C5258D00BD3B59 /* PropertList+CoreDataClass.h */,
+				1348D09A21C5258D00BD3B59 /* PropertList+CoreDataClass.m */,
+				1348D09B21C5258D00BD3B59 /* PropertList+CoreDataProperties.m */,
+				1348D09C21C5258D00BD3B59 /* User+CoreDataProperties.h */,
+				1348D09D21C5258D00BD3B59 /* User+CoreDataClass.h */,
+				1348D09E21C5258D00BD3B59 /* User+CoreDataClass.m */,
+				1348D09F21C5258D00BD3B59 /* User+CoreDataProperties.m */,
+				1348D0A021C5258D00BD3B59 /* TaskList+CoreDataProperties.h */,
+				1348D0A121C5258E00BD3B59 /* TaskList+CoreDataClass.h */,
+				1348D0A221C5258E00BD3B59 /* TaskList+CoreDataClass.m */,
+				1348D0A321C5258E00BD3B59 /* TaskList+CoreDataProperties.m */,
 				EF37E0AA21B7C529004C14F8 /* Profile */,
 				EF37E09421B79D60004C14F8 /* Tutorial */,
 				92DB62A51FA9C05400F7FF14 /* AppDelegate.h */,
@@ -1196,6 +1196,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1348D0A521C5258E00BD3B59 /* PropertList+CoreDataProperties.m in Sources */,
 				925098052104640400E3D5EA /* DPCustomAlertView.m in Sources */,
 				92DB633A1FA9C4B500F7FF14 /* NetworkLayer.m in Sources */,
 				92DB62AA1FA9C05400F7FF14 /* ViewController.m in Sources */,
@@ -1207,11 +1208,13 @@
 				92DB62D51FA9C08000F7FF14 /* VideoPlayer.m in Sources */,
 				EF37E0BB21B7D79C004C14F8 /* TPKeyboardAvoidingCollectionView.m in Sources */,
 				92DB62D61FA9C08000F7FF14 /* Reachability.m in Sources */,
+				1348D0A721C5258E00BD3B59 /* User+CoreDataProperties.m in Sources */,
 				92DB62F91FA9C13D00F7FF14 /* CMNavBarNotificationView.m in Sources */,
 				92DB62D91FA9C08000F7FF14 /* NSData+Base64.m in Sources */,
 				92DB63361FA9C35600F7FF14 /* MMDrawerVisualState.m in Sources */,
 				92DB63861FA9DCD400F7FF14 /* LoginBaseViewController.m in Sources */,
 				92F664242192C28B00B75955 /* OuterScrollView.m in Sources */,
+				1348D0A921C5258E00BD3B59 /* TaskList+CoreDataProperties.m in Sources */,
 				92DB63241FA9C1C600F7FF14 /* CommonFunction.m in Sources */,
 				92DB62F11FA9C11900F7FF14 /* FTProgressIndicator.m in Sources */,
 				92DB64421FA9F4E000F7FF14 /* SDWebImageDownloaderOperation.m in Sources */,
@@ -1226,9 +1229,9 @@
 				92DB62D31FA9C08000F7FF14 /* ARDatePicker.m in Sources */,
 				92DB638A1FA9DCD400F7FF14 /* ForgotPasswordViewController.m in Sources */,
 				92DB64551FA9F50B00F7FF14 /* ToastView.m in Sources */,
-				1306921E21BEF42C00C97298 /* User+CoreDataProperties.m in Sources */,
 				92DB62D71FA9C08000F7FF14 /* MBProgressHUD.m in Sources */,
 				13302DFB21C18A2000CF8B43 /* AFHTTPRequestOperationManager.m in Sources */,
+				1348D0A821C5258E00BD3B59 /* TaskList+CoreDataClass.m in Sources */,
 				92DB64451FA9F4E000F7FF14 /* UIImage+MultiFormat.m in Sources */,
 				92DB63261FA9C1C600F7FF14 /* SingletonClass.m in Sources */,
 				13302DCD21C180E300CF8B43 /* AGListViewAnimationButton.m in Sources */,
@@ -1238,6 +1241,7 @@
 				92099F5B1FC18320002F22CF /* SaveMediasToCustomAlbum.m in Sources */,
 				92DB62B51FA9C05500F7FF14 /* main.m in Sources */,
 				92DB63871FA9DCD400F7FF14 /* SignUpViewController.m in Sources */,
+				1348D0A621C5258E00BD3B59 /* User+CoreDataClass.m in Sources */,
 				92DB643F1FA9F4E000F7FF14 /* SDWebImageImageIOCoder.m in Sources */,
 				92DB63891FA9DCD400F7FF14 /* SignInViewController.m in Sources */,
 				92DB64401FA9F4E000F7FF14 /* UIImageView+WebCache.m in Sources */,
@@ -1248,7 +1252,6 @@
 				13302DF521C18A2000CF8B43 /* AFNetworkReachabilityManager.m in Sources */,
 				92DB63161FA9C19B00F7FF14 /* DataLayer.m in Sources */,
 				92F664212192C26800B75955 /* UIView+findViewController.m in Sources */,
-				1306921C21BEF42C00C97298 /* PropertList+CoreDataProperties.m in Sources */,
 				92DB63881FA9DCD400F7FF14 /* RegisterationSuccessViewController.m in Sources */,
 				92DB62D21FA9C08000F7FF14 /* UIImage+fixOrientation.m in Sources */,
 				92DB62D81FA9C08000F7FF14 /* MMPickerView.m in Sources */,
@@ -1270,14 +1273,12 @@
 				92DB62A71FA9C05400F7FF14 /* AppDelegate.m in Sources */,
 				92DB64511FA9F4E000F7FF14 /* UIImage+WebP.m in Sources */,
 				EF37E0BC21B7D79C004C14F8 /* TPKeyboardAvoidingScrollView.m in Sources */,
-				1377C03C21C01436002D6AFC /* TaskList+CoreDataProperties.m in Sources */,
 				EF37E09B21B79D73004C14F8 /* NDIntroPageView.m in Sources */,
 				13302DD021C180E300CF8B43 /* AGPullViewConfigurator.m in Sources */,
 				92DB643D1FA9F4E000F7FF14 /* SDWebImageCoder.m in Sources */,
 				13302DCE21C180E300CF8B43 /* AGPullMarginView.m in Sources */,
 				92F664302192C3D800B75955 /* RightViewController.m in Sources */,
 				92DB644F1FA9F4E000F7FF14 /* UIView+WebCacheOperation.m in Sources */,
-				1306921B21BEF42C00C97298 /* PropertList+CoreDataClass.m in Sources */,
 				92DB64471FA9F4E000F7FF14 /* SDWebImageFrame.m in Sources */,
 				92DB643C1FA9F4E000F7FF14 /* SDImageCache.m in Sources */,
 				92DB64391FA9F4E000F7FF14 /* UIImage+GIF.m in Sources */,
@@ -1295,12 +1296,12 @@
 				EF37E09D21B79D73004C14F8 /* NDIntroView.m in Sources */,
 				92DB644A1FA9F4E000F7FF14 /* SDWebImageGIFCoder.m in Sources */,
 				92DB64461FA9F4E000F7FF14 /* SDWebImageCoderHelper.m in Sources */,
+				1348D0A421C5258E00BD3B59 /* PropertList+CoreDataClass.m in Sources */,
 				92DB64491FA9F4E000F7FF14 /* SDWebImageDownloader.m in Sources */,
 				92DB64501FA9F4E000F7FF14 /* UIButton+WebCache.m in Sources */,
 				EF37E0BE21B7D79C004C14F8 /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
 				1377C04821C03482002D6AFC /* LocationShareViewController.m in Sources */,
 				1377C04521C03022002D6AFC /* TS_ProjectCreationViewController.m in Sources */,
-				1306921D21BEF42C00C97298 /* User+CoreDataClass.m in Sources */,
 				92DB63271FA9C1C600F7FF14 /* LocalizationSystem.m in Sources */,
 				92F6641E2192C25200B75955 /* ContainerViewController.m in Sources */,
 				1377C04E21C03666002D6AFC /* NearByTableViewCell.m in Sources */,
@@ -1315,7 +1316,6 @@
 				92F6642D2192C3D000B75955 /* LeftViewController.m in Sources */,
 				13302DF721C18A2000CF8B43 /* AFURLRequestSerialization.m in Sources */,
 				92DB64411FA9F4E000F7FF14 /* NSData+ImageContentType.m in Sources */,
-				1377C03B21C01436002D6AFC /* TaskList+CoreDataClass.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

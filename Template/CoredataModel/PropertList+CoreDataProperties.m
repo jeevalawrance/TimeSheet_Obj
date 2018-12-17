@@ -2,7 +2,7 @@
 //  PropertList+CoreDataProperties.m
 //  ScrollingPOC
 //
-//  Created by Jeeva on 12/10/18.
+//  Created by Jeeva on 12/15/18.
 //  Copyright © 2018 CPD. All rights reserved.
 //
 //
@@ -22,5 +22,7 @@
 @dynamic projectName;
 @dynamic userID;
 @dynamic userType;
+@dynamic user;
+@dynamic task;
 
 @end

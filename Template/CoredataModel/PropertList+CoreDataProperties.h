@@ -2,12 +2,12 @@
 //  PropertList+CoreDataProperties.h
 //  ScrollingPOC
 //
-//  Created by Jeeva on 12/10/18.
+//  Created by Jeeva on 12/15/18.
 //  Copyright © 2018 CPD. All rights reserved.
 //
 //
 
-#import "PropertList+CoreDataClass.h"
+#import ".PropertList+CoreDataClass.h"
 
 
 NS_ASSUME_NONNULL_BEGIN
@@ -23,6 +23,17 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, copy) NSString *projectName;
 @property (nullable, nonatomic, copy) NSString *userID;
 @property (nonatomic) int16_t userType;
+@property (nullable, nonatomic, retain) NSSet<User *> *user;
+@property (nullable, nonatomic, retain) TaskList *task;
+
+@end
+
+@interface PropertList (CoreDataGeneratedAccessors)
+
+- (void)addUserObject:(User *)value;
+- (void)removeUserObject:(User *)value;
+- (void)addUser:(NSSet<User *> *)values;
+- (void)removeUser:(NSSet<User *> *)values;
 
 @end
 

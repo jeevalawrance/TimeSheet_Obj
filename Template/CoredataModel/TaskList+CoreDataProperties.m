@@ -2,7 +2,7 @@
 //  TaskList+CoreDataProperties.m
 //  ScrollingPOC
 //
-//  Created by Jeeva on 12/11/18.
+//  Created by Jeeva on 12/15/18.
 //  Copyright © 2018 CPD. All rights reserved.
 //
 //
@@ -15,11 +15,12 @@
 	return [NSFetchRequest fetchRequestWithEntityName:@"TaskList"];
 }
 
+@dynamic endTime;
 @dynamic projectId;
+@dynamic startTime;
 @dynamic taskName;
 @dynamic userEmail;
 @dynamic userType;
-@dynamic startTime;
-@dynamic endTime;
+@dynamic project;
 
 @end

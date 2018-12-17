@@ -2,12 +2,12 @@
 //  User+CoreDataProperties.h
 //  ScrollingPOC
 //
-//  Created by Jeeva on 12/10/18.
+//  Created by Jeeva on 12/15/18.
 //  Copyright © 2018 CPD. All rights reserved.
 //
 //
 
-#import "User+CoreDataClass.h"
+#import ".User+CoreDataClass.h"
 
 
 NS_ASSUME_NONNULL_BEGIN
@@ -17,11 +17,12 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSFetchRequest<User *> *)fetchRequest;
 
 @property (nullable, nonatomic, copy) NSString *userEmail;
+@property (nullable, nonatomic, copy) NSString *userID;
 @property (nonatomic) BOOL userIsVerified;
 @property (nullable, nonatomic, copy) NSString *userName;
 @property (nullable, nonatomic, copy) NSString *userSurname;
 @property (nonatomic) int16_t userType;
-@property (nullable, nonatomic, copy) NSString *userID;
+@property (nullable, nonatomic, retain) PropertList *project;
 
 @end
 

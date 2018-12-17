@@ -143,11 +143,11 @@
     
     _tblLocationNearby.tableFooterView=[[UIView alloc] initWithFrame:CGRectZero];
     
-    //    UILongPressGestureRecognizer *tapRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressTap:)];
-    //
-    //    tapRecognizer.minimumPressDuration= 0.5;
-    //
-    //    [self.mapView addGestureRecognizer:tapRecognizer];
+        UILongPressGestureRecognizer *tapRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressTap:)];
+    
+        tapRecognizer.minimumPressDuration= 0.5;
+    
+        [self.mapView addGestureRecognizer:tapRecognizer];
     
     
     currentLocationAnnotation = [[MKPointAnnotation alloc] init];

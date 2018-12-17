@@ -8,6 +8,8 @@
         <attribute name="projectName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="task" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TaskList" inverseName="project" inverseEntity="TaskList" syncable="YES"/>
+        <relationship name="user" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="project" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="TaskList" representedClassName=".TaskList" syncable="YES">
         <attribute name="endTime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -16,6 +18,7 @@
         <attribute name="taskName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userEmail" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="project" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PropertList" inverseName="task" inverseEntity="PropertList" syncable="YES"/>
     </entity>
     <entity name="User" representedClassName=".User" syncable="YES">
         <attribute name="userEmail" optional="YES" attributeType="String" syncable="YES"/>
@@ -24,10 +27,11 @@
         <attribute name="userName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userSurname" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="project" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="PropertList" inverseName="user" inverseEntity="PropertList" syncable="YES"/>
     </entity>
     <elements>
-        <element name="PropertList" positionX="-54" positionY="-9" width="128" height="150"/>
-        <element name="TaskList" positionX="-36" positionY="63" width="128" height="135"/>
-        <element name="User" positionX="-18" positionY="81" width="128" height="135"/>
+        <element name="PropertList" positionX="-54" positionY="-9" width="128" height="180"/>
+        <element name="TaskList" positionX="-36" positionY="63" width="128" height="150"/>
+        <element name="User" positionX="-18" positionY="81" width="128" height="150"/>
     </elements>
 </model>
