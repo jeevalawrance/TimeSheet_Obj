@@ -7,7 +7,7 @@
 //
 //
 
-#import ".PropertList+CoreDataClass.h"
+#import "PropertList+CoreDataClass.h"
 
 
 NS_ASSUME_NONNULL_BEGIN

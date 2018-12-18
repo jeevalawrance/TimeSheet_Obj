@@ -7,7 +7,7 @@
 //
 //
 
-#import ".User+CoreDataClass.h"
+#import "User+CoreDataClass.h"
 
 
 NS_ASSUME_NONNULL_BEGIN

@@ -9,9 +9,11 @@
 #import "TS_DashboardViewController.h"
 #import "TS_DashboardCellCollectionViewCell.h"
 #import "TS_ProjectListViewController.h"
+#import "ScheduleViewController.h"
 
 typedef NS_ENUM(NSInteger, DashboardMenuOrder) {
     kSiteWise=1,
+    kSchedule,
     kTaskWise,
     kTaskInput,
     kActivity,
@@ -34,12 +36,17 @@ static NSString *image     =   @"image";
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-//    self.dashArray = [[NSMutableArray alloc] init];
+    //    self.dashArray = [[NSMutableArray alloc] init];
     
     self.dashArray = @[@{rowIndex : [NSNumber numberWithInt:kSiteWise],
                          title : @"Site-Wise",
                          subTitle : @"List Report",
                          image:@"sitewise"
+                         },
+                       @{rowIndex : [NSNumber numberWithInt:kSchedule],
+                         title : @"Schedule",
+                         subTitle : @"Create Roster",
+                         image:@"Schedule"
                          },
                        @{rowIndex : [NSNumber numberWithInt:kTaskWise],
                          title : @"Task-Wise",
@@ -57,10 +64,10 @@ static NSString *image     =   @"image";
                          image:@"Activity"
                          }
                        ];
-
+    
     UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"Log out" style:UIBarButtonItemStylePlain target:self action:@selector(signoutAction:)]; //[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(signoutAction:)];
     self.navigationItem.rightBarButtonItem = right;
-
+    
 }
 - (void)signoutAction:(id)sender
 {
@@ -72,7 +79,7 @@ static NSString *image     =   @"image";
     }]];
     
     [actionSheet addAction:[UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-
+        
         NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
         [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
         [[NSUserDefaults standardUserDefaults] synchronize];
@@ -98,7 +105,7 @@ static NSString *image     =   @"image";
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     return self.dashArray.count;
-
+    
 }
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -112,18 +119,18 @@ static NSString *image     =   @"image";
     cell.image.image = [UIImage imageNamed:dict[image]];
     cell.lblSubTile.text = dict[subTitle];
     
-
+    
     //    self.viewShadow.layer.cornerRadius = 10
     //    self.viewShadow.layer.shadowOffset = CGSize(width: 2, height: 6) //CGSizeMake(2, 6)
     
-//    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-//    
-//    imageView.image = [UIImage imageNamed:[onlyImages objectAtIndex:indexPath.row]];
-//    
-//    [[cell.contentView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
-//    
-//    
-//    [cell.contentView addSubview:imageView];
+    //    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+    //
+    //    imageView.image = [UIImage imageNamed:[onlyImages objectAtIndex:indexPath.row]];
+    //
+    //    [[cell.contentView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    //
+    //
+    //    [cell.contentView addSubview:imageView];
     
     return cell;
     
@@ -131,7 +138,7 @@ static NSString *image     =   @"image";
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSDictionary *dict = [self.dashArray objectAtIndex:indexPath.row];
-
+    
     if ([dict[rowIndex] intValue] == kTaskInput) {
         
         UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"TaskInput" bundle:nil];
@@ -139,15 +146,28 @@ static NSString *image     =   @"image";
         
         [self.navigationController pushViewController:objProject animated:YES];
     }
+    if ([dict[rowIndex] intValue] == kSchedule) {
+        
+        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:kStoryboardIdSchedule bundle:nil];
+        
+        ScheduleViewController *root =[storyBoard instantiateViewControllerWithIdentifier:@"ScheduleViewController"];
+        
+        [self.navigationController pushViewController:root animated:YES];
+        
+        //        TS_ProjectListViewController *objProject =[storyBoard instantiateViewControllerWithIdentifier:@"TS_ProjectListViewControllerVC"];
+        //
+        //        [self.navigationController pushViewController:objProject animated:YES];
+    }
+    
 }
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

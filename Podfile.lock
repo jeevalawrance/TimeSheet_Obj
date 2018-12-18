@@ -1,16 +1,20 @@
 PODS:
+  - FSCalendar (2.8.0)
   - TOCropViewController (2.3.8)
 
 DEPENDENCIES:
+  - FSCalendar
   - TOCropViewController
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - FSCalendar
     - TOCropViewController
 
 SPEC CHECKSUMS:
+  FSCalendar: 3a5ed3636e2ba1b83ebebfcf0c2603105a6f5efe
   TOCropViewController: 0a075f02c253e88095143bbac7b013fc6fba5090
 
-PODFILE CHECKSUM: 1c6ef6b693976aa0e55582df36cddec0bbda0815
+PODFILE CHECKSUM: 6f3034ed9257c18afadf2802922cbc5eaabba69e
 
 COCOAPODS: 1.6.0.beta.1

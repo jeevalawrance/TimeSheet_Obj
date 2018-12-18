@@ -164,6 +164,9 @@
 		EF37E0BE21B7D79C004C14F8 /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = EF37E0BA21B7D79B004C14F8 /* UIScrollView+TPKeyboardAvoidingAdditions.m */; };
 		EF37E0C021B7DD6D004C14F8 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF37E0BF21B7DD6D004C14F8 /* Profile.storyboard */; };
 		EF37E0C321B7E179004C14F8 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF37E0C221B7E179004C14F8 /* RegisterViewController.m */; };
+		EFA8ADC521C8DB8B004CC32A /* Schedule.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EFA8ADC421C8DB8B004CC32A /* Schedule.storyboard */; };
+		EFA8ADC921C8DB97004CC32A /* ScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFA8ADC821C8DB96004CC32A /* ScheduleViewController.m */; };
+		EFA8ADCB21C8DBE0004CC32A /* Schedule@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EFA8ADCA21C8DBDE004CC32A /* Schedule@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -458,6 +461,10 @@
 		EF37E0BF21B7DD6D004C14F8 /* Profile.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
 		EF37E0C121B7E179004C14F8 /* RegisterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
 		EF37E0C221B7E179004C14F8 /* RegisterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
+		EFA8ADC421C8DB8B004CC32A /* Schedule.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Schedule.storyboard; sourceTree = "<group>"; };
+		EFA8ADC721C8DB96004CC32A /* ScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleViewController.h; sourceTree = "<group>"; };
+		EFA8ADC821C8DB96004CC32A /* ScheduleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleViewController.m; sourceTree = "<group>"; };
+		EFA8ADCA21C8DBDE004CC32A /* Schedule@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Schedule@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -572,6 +579,7 @@
 				EF37E0BF21B7DD6D004C14F8 /* Profile.storyboard */,
 				1377C02921BFFD35002D6AFC /* Dashboard.storyboard */,
 				1377C03D21C01537002D6AFC /* TaskInput.storyboard */,
+				EFA8ADC421C8DB8B004CC32A /* Schedule.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -630,6 +638,7 @@
 				EF37E0A721B7C223004C14F8 /* LeftTableViewCell.h */,
 				EF37E0A821B7C223004C14F8 /* LeftTableViewCell.m */,
 				130691E021BEA85700C97298 /* ScrollingPOC-Bridging-Header.h */,
+				EFA8ADCA21C8DBDE004CC32A /* Schedule@2x.png */,
 			);
 			path = Template;
 			sourceTree = "<group>";
@@ -888,6 +897,7 @@
 		92DB639C1FA9E11E00F7FF14 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				EFA8ADC621C8DB96004CC32A /* Schedule */,
 				13302DD221C183E900CF8B43 /* Model */,
 				1377C03F21C01575002D6AFC /* Task */,
 				1377C02421BFFCAD002D6AFC /* Dashboard */,
@@ -1041,6 +1051,16 @@
 			path = TPKeyboardAvoiding;
 			sourceTree = "<group>";
 		};
+		EFA8ADC621C8DB96004CC32A /* Schedule */ = {
+			isa = PBXGroup;
+			children = (
+				EFA8ADC721C8DB96004CC32A /* ScheduleViewController.h */,
+				EFA8ADC821C8DB96004CC32A /* ScheduleViewController.m */,
+			);
+			name = Schedule;
+			path = ../../../../ScrollingPOC/Template/ViewControllers/Schedule;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1127,12 +1147,14 @@
 				1377C05421C0426A002D6AFC /* reload_location.png in Resources */,
 				1377C03E21C01537002D6AFC /* TaskInput.storyboard in Resources */,
 				92DB63181FA9C19B00F7FF14 /* NSFetchedResultsController.rtf in Resources */,
+				EFA8ADC521C8DB8B004CC32A /* Schedule.storyboard in Resources */,
 				92DB635A1FA9D04300F7FF14 /* HelveticaNeueLTArabic-Light.ttf in Resources */,
 				92DB62F01FA9C11900F7FF14 /* FTProgressIndicator.bundle in Resources */,
 				92DB63591FA9D04300F7FF14 /* HelveticaNeueLTArabic-Bold.ttf in Resources */,
 				EF37E0A121B7A00F004C14F8 /* Tutorial.storyboard in Resources */,
 				92DB635B1FA9D04300F7FF14 /* Gothammedium.otf in Resources */,
 				92DB63551FA9D04300F7FF14 /* Gotham-Light-1.otf in Resources */,
+				EFA8ADCB21C8DBE0004CC32A /* Schedule@2x.png in Resources */,
 				92DB63561FA9D04300F7FF14 /* Dubai-Light.otf in Resources */,
 				92DB63661FA9D06700F7FF14 /* viewpassword@2x.png in Resources */,
 				EF37E0AF21B7C840004C14F8 /* profile-bg.png in Resources */,
@@ -1197,6 +1219,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1348D0A521C5258E00BD3B59 /* PropertList+CoreDataProperties.m in Sources */,
+				EFA8ADC921C8DB97004CC32A /* ScheduleViewController.m in Sources */,
 				925098052104640400E3D5EA /* DPCustomAlertView.m in Sources */,
 				92DB633A1FA9C4B500F7FF14 /* NetworkLayer.m in Sources */,
 				92DB62AA1FA9C05400F7FF14 /* ViewController.m in Sources */,

@@ -8,6 +8,7 @@ target 'ScrollingPOC' do
   # Pods for ScrollingPOC
 
   pod 'TOCropViewController'
+  pod 'FSCalendar'
 
 
 end
